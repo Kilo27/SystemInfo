@@ -6,6 +6,14 @@ package org.example;
 public class App {
     public static void main(String[] args){
         OshiMethod oshi = new OshiMethod();
+        LogicalCPU threadCpu = new LogicalCPU();
+        PhysicalCPU physicalCpu = new PhysicalCPU();
+        ProcessorSpecs specs = new ProcessorSpecs();
+        SysMemory memory = new SysMemory();
+        specs.testData();
+        physicalCpu.testData();
+        threadCpu.testData();
+        memory.testData();
         oshi.printSysUtil();
     }
 }

@@ -276,8 +276,26 @@ class ProcessorSpecs extends OshiMethod{
     public String microarchitecture(){
         return cpu.getProcessorIdentifier().getMicroarchitecture();
     }
+    public void testData(){
+        System.out.printf("%-25s | %s\n","Processor Name: " , name());
+        System.out.printf("%-25s | %s\n","Processor Family: " , family());
+        System.out.printf("%-25s | Processor Model: " , model());
+        System.out.printf("%-25s | Processor ID: " , id());
+        System.out.printf("%-25s | 64 Bit: " , is64Bit());
+        System.out.printf("%-25s | Microarchitecture: " , microarchitecture());
+    }
 }
 class SysMemory extends OshiMethod{
+    private String formatBytes(long bytes) {
+        double value = bytes;
+        String[] units = {"B", "KB", "MB", "GB", "TB"};
+        int i = 0;
+        while (value >= 1024 && i < units.length - 1) {
+            value /= 1024;
+            i++;
+        }
+        return String.format("%.2f %s", value, units[i]);
+    }
     SysMemory(){
         super();
     }
@@ -298,6 +316,16 @@ class SysMemory extends OshiMethod{
     }
     public long availableVirtualMemory(){
         return memory.getVirtualMemory().getSwapUsed();
+    }
+    public void testData(){
+        System.out.println();
+        System.out.println("=== System Memory ===");
+        System.out.println("Total Physical Memory     : " + formatBytes(totalMemory()));
+        System.out.println("Available Physical Memory : " + formatBytes(availableMemory()));
+        System.out.println("Used Physical Memory      : " + formatBytes(freeMemory()));
+        System.out.println("Total Virtual Memory (Swap): " + formatBytes(virtualMemory()));
+        System.out.println("Used Virtual Memory (Swap) : " + formatBytes(availableVirtualMemory()));
+        System.out.println("Memory Page Size          : " + formatBytes(pageSize()));
     }
 }
 /* Used Chatgpt to check for any logic issues or improvements to current methods. -May implement this later
