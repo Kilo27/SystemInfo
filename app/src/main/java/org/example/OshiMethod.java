@@ -1,3 +1,5 @@
+package org.example;
+
 import oshi.SystemInfo;
 import oshi.hardware.Sensors;
 import oshi.hardware.CentralProcessor;
