@@ -6,6 +6,6 @@ package org.example;
 public class App {
     public static void main(String[] args){
         OshiMethod oshi = new OshiMethod();
-        oshi.printSystemSpecifics();
+        oshi.printSysUtil();
     }
 }

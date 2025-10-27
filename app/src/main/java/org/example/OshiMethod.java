@@ -17,10 +17,10 @@ import java.util.List;
 
 class OshiMethod {
 
-    private SystemInfo systeminfo;
-    private HardwareAbstractionLayer hardware;
-    private CentralProcessor cpu;
-    private GlobalMemory memory;
+    protected SystemInfo systeminfo;
+    protected HardwareAbstractionLayer hardware;
+    protected CentralProcessor cpu;
+    protected GlobalMemory memory;
 
 
     public OshiMethod() {
@@ -98,6 +98,7 @@ class OshiMethod {
         }
     }
     //%-25s | %s\n
+
     public void printMemory() {
         System.out.println("\n=== Memory ===");
         System.out.printf("%-25s | %s GB\n","Total Memory: " , FormatUtil.formatBytes(memory.getTotal()));
@@ -161,6 +162,65 @@ class OshiMethod {
         printDisks();
     }
 
+}
+class SysCPU extends ProcessorSpecs{
+    long[] freqs = cpu.getCurrentFreq();
+    long maxfreq = cpu.getMaxFreq();
+    double[] cpuLoad = cpu.getProcessorCpuLoad(1000);
+    List<PhysicalProcessor> phyproc = cpu.getPhysicalProcessors();
+    List<LogicalProcessor> logproc = cpu.getLogicalProcessors();
+    public int physicalProcessorCount(){
+        return cpu.getPhysicalProcessorCount();
+    }
+    public String getIdString(int i){
+        return phyproc.get(i).getIdString();
+    }
+    public int getPackageNumber(int i){
+        return phyproc.get(i).getPhysicalPackageNumber();
+    }
+}
+class ProcessorSpecs extends OshiMethod{
+    public String name(){
+        return cpu.getProcessorIdentifier().getName();
+    }
+    public String family(){
+        return cpu.getProcessorIdentifier().getFamily();
+    }
+    public String model(){
+        return cpu.getProcessorIdentifier().getModel();
+    }
+    public String id(){
+        return cpu.getProcessorIdentifier().getProcessorID();
+    }
+    public boolean is64Bit(){
+        return cpu.getProcessorIdentifier().isCpu64bit();
+    }
+    public String microarchitecture(){
+        return cpu.getProcessorIdentifier().getMicroarchitecture();
+    }
+}
+class SysMemory extends OshiMethod{
+    SysMemory(){
+        super();
+    }
+    public long totalMemory(){
+        return memory.getTotal();
+    }
+    public long availableMemory(){
+        return memory.getAvailable();
+    }
+    public long freeMemory(){
+        return memory.getTotal()-memory.getAvailable();
+    }
+    public long virtualMemory(){
+        return memory.getVirtualMemory().getSwapTotal();
+    }
+    public long pageSize(){
+        return memory.getPageSize();
+    }
+    public long availableVirtualMemory(){
+        return memory.getVirtualMemory().getSwapUsed();
+    }
 }
 /* Used Chatgpt to check for any logic issues or improvements to current methods. -May implement this later
  public void printUSBTree(UsbDevice device, int indent) {
