@@ -21,6 +21,12 @@ dependencies {
 
     // This dependency is used by the application.
     implementation libs.guava
+
+    //OSHI dependency
+    implementation 'com.github.oshi:oshi-core:6.8.3'
+    //This should fixes the "SLF4J providers not found" error, for some reason not working
+    implementation 'org.slf4j:slf4j-api:2.0.16'
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -32,5 +38,5 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'org.example.App'
+    mainClass = 'App'
 }
