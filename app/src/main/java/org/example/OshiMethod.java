@@ -51,7 +51,7 @@ class OshiMethod {
         Sensors sensor = hardware.getSensors();
     }
 
-    public void printSystemSpecifics() {
+    /*public void printSystemSpecifics() {
         System.out.println("\n=== System Specifications ===");
         System.out.printf("%-25s | %s\n ", "Name", cpu.getProcessorIdentifier().getName());
         System.out.printf("%-25s | %s\n ", "Family", cpu.getProcessorIdentifier().getFamily());
@@ -59,9 +59,9 @@ class OshiMethod {
         System.out.printf("%-25s | %s\n ", "Processor ID: ", cpu.getProcessorIdentifier().getProcessorID());
         System.out.printf("%-25s | %s\n", "Is Model 64 bit: ", cpu.getProcessorIdentifier().isCpu64bit());
         System.out.printf("%-25s | %s\n", "Microarchitecture: ", cpu.getProcessorIdentifier().getMicroarchitecture());
-    }
-
-    public void printCPU() {
+    }*/
+    //OverWritten in CPU Classes
+    /*public void printCPU() {
         long[] freqs = cpu.getCurrentFreq();
         long maxfreq = cpu.getMaxFreq();
         double[] cpuLoad = cpu.getProcessorCpuLoad(1000);
@@ -96,10 +96,10 @@ class OshiMethod {
         for(double tick : cpuLoad) {
             System.out.println(tick);
         }
-    }
+    }*/
     //%-25s | %s\n
 
-    public void printMemory() {
+    /*public void printMemory() {
         System.out.println("\n=== Memory ===");
         System.out.printf("%-25s | %s GB\n","Total Memory: " , FormatUtil.formatBytes(memory.getTotal()));
         System.out.printf("%-25s | %s GB\n","Available Memory: " , FormatUtil.formatBytes(memory.getAvailable()));
@@ -107,6 +107,7 @@ class OshiMethod {
         System.out.printf("%-25s | %s GB\n","Page Size: " , FormatUtil.formatBytes(memory.getPageSize()));
         System.out.printf("%-25s | %s\n", "Available Virtual Memory: ", FormatUtil.formatBytes(memory.getVirtualMemory().getSwapUsed()));
     }
+    */
 
     public void printCacheMemory() {
         System.out.println("\n=== Cache Memory ===");
@@ -122,7 +123,7 @@ class OshiMethod {
         }
     }
 
-    public void printUSBdevices() {
+    public void printUSBDevices() {
         List<UsbDevice> devices = hardware.getUsbDevices(true);
         System.out.println("\n=== USB Devices ===");
         for(UsbDevice device : devices) {
@@ -154,11 +155,11 @@ class OshiMethod {
 
 
     public void printSysUtil() {
-        printSystemSpecifics();
-        printCPU();
-        printMemory();
+        //printSystemSpecifics();
+        //printCPU();
+        //printMemory();
         printCacheMemory();
-        printUSBdevices();
+        printUSBDevices();
         printDisks();
     }
 
