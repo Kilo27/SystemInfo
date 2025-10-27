@@ -30,6 +30,16 @@ class OshiMethod {
         initMemory();
         initSensors();
     }
+    protected String formatBytes(long bytes) {//This Function was written by chatGPT but is actually extremely useful, so I might keep it
+        double value = bytes;
+        String[] units = {"B", "KB", "MB", "GB", "TB"};
+        int i = 0;
+        while (value >= 1024 && i < units.length - 1) {
+            value /= 1024;
+            i++;
+        }
+        return String.format("%.2f %s", value, units[i]);
+    }
 
     public void initSystemInfo() {
         systeminfo = new SystemInfo();
@@ -144,9 +154,9 @@ class OshiMethod {
             System.out.printf("%-25s | %s\n", "Model: ", disk.getModel());
             System.out.printf("%-25s | %s\n", "Name: ", disk.getName());
             System.out.printf("%-25s | %s\n", "Partitions: ", disk.getPartitions());
-            System.out.printf("%-25s | %s\n", "Read Bytes: ", disk.getReadBytes());
+            System.out.printf("%-25s | %s\n", "Read Bytes: ", formatBytes(disk.getReadBytes()));
             System.out.printf("%-25s | %s\n", "Reads: ", disk.getReads());
-            System.out.printf("%-25s | %s\n", "Size: ", disk.getSize());
+            System.out.printf("%-25s | %s\n", "Size: ", formatBytes(disk.getSize()));
             System.out.printf("%-25s | %s milliseconds\n", "Transfer Time: ", disk.getTransferTime());
             System.out.printf("%-25s | %s\n", "Write Bytes: ", disk.getWriteBytes());
             System.out.printf("%-25s | %s\n", "Writes: ", disk.getWrites());
@@ -286,16 +296,7 @@ class ProcessorSpecs extends OshiMethod{
     }
 }
 class SysMemory extends OshiMethod{
-    private String formatBytes(long bytes) {
-        double value = bytes;
-        String[] units = {"B", "KB", "MB", "GB", "TB"};
-        int i = 0;
-        while (value >= 1024 && i < units.length - 1) {
-            value /= 1024;
-            i++;
-        }
-        return String.format("%.2f %s", value, units[i]);
-    }
+
     SysMemory(){
         super();
     }
