@@ -4,12 +4,15 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class App {
     public static void main(String[] args) {
 
         MainMenuFrame mainMenuFrame = new MainMenuFrame();
-        mainMenuFrame.setVisible(true);
+
+
 
     }
 }
@@ -21,7 +24,7 @@ abstract class AbstractSystemInfoFrame extends JFrame {
     int windowHeight = 800;
 
     protected AbstractSystemInfoFrame(){
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Exiting the window ends the program
         setResizable(false);
         setSize(windowWidth, windowHeight);
         setLayout(null); // using no layout manager
@@ -34,6 +37,7 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
     public MainMenuFrame() {
 
         super();
+        setTitle("System Info - Main Menu");
 
         // Buttons
         JButton[] selectMenuButtons = {
@@ -46,6 +50,16 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
                 new JButton("PCI Devices")
         };
 
+        Class<? extends AbstractSystemInfoFrame>[] frameClasses = new Class[]{
+                CPUMenuFrame.class,
+                GraphicsMenuFrame.class,
+                MemoryMenuFrame.class,
+                DisksMenuFrame.class,
+                NetworkMenuFrame.class,
+                USBDevicesMenuFrame.class,
+                PCIDevicesMenuFrame.class
+        };
+
         int buttonDownShift = 220; // Y-Position of Top Button
         for (JButton button : selectMenuButtons) {
             button.setBounds(480, buttonDownShift, 200, 50);
@@ -53,13 +67,81 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
             add(button);
         }
 
+        // Add action to the button
+        selectMenuButtons[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CPUMenuFrame();
+                dispose();
+            }
+        });
+
         // OS Logo
         ImageIcon icon = new ImageIcon("assets/iconWindows11.png");
         JLabel osLogo = new JLabel(icon);
         osLogo.setBounds(550, 80, 50, 50);
         add(osLogo);
+
+        // Make Frame Visible
+        setVisible(true);
     }
 
 
 }
 
+class CPUMenuFrame extends AbstractSystemInfoFrame {
+    public CPUMenuFrame() {
+        super();
+        setTitle("System Info - CPU");
+
+        JLabel testText = new JLabel("Yay!");
+        testText.setBounds(480, 80, 50, 50);
+        testText.setForeground(textColor);
+
+        add(testText);
+
+        setVisible(true);
+    }
+}
+
+class GraphicsMenuFrame extends AbstractSystemInfoFrame {
+    public GraphicsMenuFrame() {
+        super();
+        setTitle("System Info - Graphics");
+    }
+}
+
+class MemoryMenuFrame extends AbstractSystemInfoFrame {
+    public MemoryMenuFrame() {
+        super();
+        setTitle("System Info - Memory");
+    }
+}
+
+class DisksMenuFrame extends AbstractSystemInfoFrame {
+    public DisksMenuFrame() {
+        super();
+        setTitle("System Info - Disks");
+    }
+}
+
+class NetworkMenuFrame extends AbstractSystemInfoFrame {
+    public NetworkMenuFrame() {
+        super();
+        setTitle("System Info - Network");
+    }
+}
+
+class USBDevicesMenuFrame extends AbstractSystemInfoFrame {
+    public USBDevicesMenuFrame() {
+        super();
+        setTitle("System Info - USB Devices");
+    }
+}
+
+class PCIDevicesMenuFrame extends AbstractSystemInfoFrame {
+    public PCIDevicesMenuFrame() {
+        super();
+        setTitle("System Info - PCI Devices");
+    }
+}
