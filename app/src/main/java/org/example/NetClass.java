@@ -1,31 +1,63 @@
 package org.example;
 
 import oshi.hardware.NetworkIF;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class NetClass extends OshiMethod {
 
-    public void doTheShit() {
+    public ArrayList<NetInterface> doTheShit() {
 
         // get list of net interfaces from hardware
         List<NetworkIF> iFList = hardware.getNetworkIFs();
+
+        ArrayList<NetInterface> netInterfaces = new ArrayList<NetInterface>();
 
         for (NetworkIF IF : iFList) {
 
             // clear existing attributes
             IF.updateAttributes();
 
-            System.out.println("Bytes sent: " + IF.getBytesSent());
-            System.out.println("Bytes recv: " + IF.getBytesRecv());
-            System.out.println("Packets sent: " + IF.getPacketsSent());
-            System.out.println("Packets recv: " + IF.getPacketsRecv());
-            System.out.println("Speed (bps): " + IF.getSpeed());
-            System.out.println("Input errors: " + IF.getInErrors());
-            System.out.println("Output errors: " + IF.getOutErrors());
-            System.out.println("Is connector present: " + IF.isConnectorPresent());
-            System.out.println("Operational status: " + IF.getIfOperStatus());
-            System.out.println("-----");
+            // append to workable list
+            netInterfaces.add(new NetInterface(IF));
 
         }
+
+        return netInterfaces;
     }
+}
+
+class NetInterface {
+
+    protected String name;
+    protected String displayName;
+    protected String macAddr;
+    protected String[] ipv4AddrList;
+    protected String[] ipv6AddrList;
+    protected NetworkIF.IfOperStatus operStatus;
+    protected boolean connectorPresent;
+    protected long speed;
+    protected long bytesSent;
+    protected long packetsSent;
+    protected long bytesReceived;
+    protected long packetsReceived;
+    protected long outErrors;
+
+    public NetInterface(NetworkIF IF) {
+        this.name = IF.getName();
+        this.displayName = IF.getDisplayName();
+        this.macAddr = IF.getMacaddr();
+        this.ipv4AddrList = IF.getIPv4addr();
+        this.ipv6AddrList = IF.getIPv6addr();
+        this.operStatus = IF.getIfOperStatus();
+        this.connectorPresent = IF.isConnectorPresent();
+        this.speed = IF.getSpeed();
+        this.bytesSent = IF.getBytesSent();
+        this.packetsSent = IF.getPacketsSent();
+        this.bytesReceived = IF.getBytesRecv();
+        this.packetsReceived = IF.getPacketsRecv();
+        this.outErrors = IF.getOutErrors();
+    }
+
 }
