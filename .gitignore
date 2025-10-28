@@ -5,4 +5,4 @@
 build
 
 #Ignore Test File
-app/src/main/java/org/example/test.java
+app\src\main\java\org\example\test
