@@ -1,9 +1,9 @@
-package org.example
+//package org.example
 
 import oshi.SystemInfo;
 import oshi.software.os.OperatingSystem;
 
-
+/*
 class OperatingSystem {
     SystemInfo systeminfo = new SystemInfo();
     OperatingSystem os = systeminfo.getOperatingSystem();
@@ -20,3 +20,4 @@ class OperatingSystem {
         return os.getVersionInfo().getVersion();
     }
 }
+*/
