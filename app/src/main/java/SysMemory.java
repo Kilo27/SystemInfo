@@ -1,5 +1,3 @@
-package org.example;
-
 public class SysMemory extends OshiMethod{
 
     SysMemory(){
