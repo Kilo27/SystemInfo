@@ -370,9 +370,9 @@ class USB extends OshiMethod {
     public void checkChildLevelUsbDevices(UsbDevice parent) {
         List<UsbDevice> children = getChildLevelUsbDevices(parent);
         if(children.isEmpty()) {
-            System.out.println("Parent" + parent.getName() + " has no children");
+            System.out.println("Parent " + parent.getName() + " has no children");
         }
-        else {
+        else{
             for(UsbDevice child : children) {
                 System.out.println("Child: " + child.getName() + " Product ID: " + child.getProductId()); 
             }
