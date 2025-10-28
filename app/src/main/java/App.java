@@ -94,11 +94,13 @@ class CPUMenuFrame extends AbstractSystemInfoFrame {
         super();
         setTitle("System Info - CPU");
 
-        JLabel testText = new JLabel("Yay!");
-        testText.setBounds(480, 80, 50, 50);
+        LogicalCPU logicalCPU = new LogicalCPU();
+
+        JLabel testText = new JLabel(String.format("CPU: %s", logicalCPU.name()));
+        testText.setBounds(480, 80, 500, 50);
         testText.setForeground(textColor);
 
-        LogicalCPU logicalCPU = new LogicalCPU();
+
 
         add(testText);
 
