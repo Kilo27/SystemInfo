@@ -330,7 +330,11 @@ class SysMemory extends OshiMethod{
     }
 }
 class Cache extends OshiMethod{
-    List<ProcessorCache> caches = cpu.getProcessorCaches();
+    public List<ProcessorCache> caches;
+    public Cache() {
+        super();
+        this.caches = cpu.getProcessorCaches();
+    }
     public int getCacheLevel(int i){
         return caches.get(i).getLevel();
     }
@@ -356,6 +360,85 @@ class Cache extends OshiMethod{
         System.out.println("====");
     }
 }
+class USB extends OshiMethod {
+    public List<UsbDevice> getParentLevelUsbDevices() {
+        return hardware.getUsbDevices(false);
+    }
+    public List<UsbDevice> getChildLevelUsbDevices(UsbDevice parent) {
+        return parent.getConnectedDevices();
+    }
+    public void checkChildLevelUsbDevices(UsbDevice parent) {
+        List<UsbDevice> children = getChildLevelUsbDevices(parent);
+        if(children.isEmpty()) {
+            System.out.println("Parent " + parent.getName() + " has no children");
+        }
+        else{
+            for(UsbDevice child : children) {
+                System.out.println("Child: " + child.getName() + " Product ID: " + child.getProductId()); 
+            }
+        }  
+    }         
+}
+
+class Disk extends OshiMethod {
+    public List<HWDiskStore> disks;
+
+    public Disk() {
+        super();
+        disks = hardware.getDiskStores();
+    }
+    
+    public long currentQueue(int i) {
+        return disks.get(i).getCurrentQueueLength();
+    }
+
+    public String diskModel(int i) {
+        return disks.get(i).getModel();
+    }
+
+    public String diskName(int i) {
+        return disks.get(i).getName();
+    }
+    public List<oshi.hardware.HWPartition> diskPart(int i) {
+        return disks.get(i).getPartitions();
+    }
+    public String readBytes(int i) {
+        return FormatUtil.formatBytes(disks.get(i).getReadBytes());
+    }
+
+    public long reads(int i)  {
+        return disks.get(i).getReads();
+    }
+
+    public String size(int i) {
+        return FormatUtil.formatBytes(disks.get(i).getSize());
+    }
+
+    public String transferTime(int i) {
+        return disks.get(i).getTransferTime() + " milliseconds";
+    }
+
+    public String writeBytes(int i) {
+        return FormatUtil.formatBytes(disks.get(i).getWriteBytes());
+    }
+
+    public long writes(int i) {
+        return disks.get(i).getWrites();
+    }
+    public void testData(){
+        System.out.printf("%-25s | %s\n", "Current Queue Length: ", currentQueue(0));
+        System.out.printf("%-25s | %s\n", "Model: ", diskModel(0));
+        System.out.printf("%-25s | %s\n", "Name: ", diskName(0));
+        System.out.printf("%-25s | %s\n", "Partitions: ", diskPart(0));
+        System.out.printf("%-25s | %s\n", "Read Bytes: ", readBytes(0));
+        System.out.printf("%-25s | %s\n", "Reads: ", reads(0));
+        System.out.printf("%-25s | %s\n", "Size: ", size(0));
+        System.out.printf("%-25s | %s milliseconds\n", "Transfer Time: ", transferTime(0));
+        System.out.printf("%-25s | %s\n", "Write Bytes: ", writeBytes(0));
+        System.out.printf("%-25s | %s\n", "Writes: ", writes(0));
+    }
+}
+
 /* Used Chatgpt to check for any logic issues or improvements to current methods. -May implement this later
  public void printUSBTree(UsbDevice device, int indent) {
     String prefix = " ".repeat(indent * 2);

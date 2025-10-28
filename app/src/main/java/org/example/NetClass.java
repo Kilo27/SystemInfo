@@ -5,7 +5,6 @@ import java.util.List;
 
 public class NetClass extends OshiMethod {
 
-
     public void doTheShit() {
 
         // get list of net interfaces from hardware
