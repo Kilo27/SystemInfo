@@ -10,6 +10,7 @@ public class App {
         PhysicalCPU physicalCpu = new PhysicalCPU();
         ProcessorSpecs specs = new ProcessorSpecs();
         SysMemory memory = new SysMemory();
+
         specs.testData();
         physicalCpu.testData();
         threadCpu.testData();
