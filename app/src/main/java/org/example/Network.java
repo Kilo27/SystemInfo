@@ -26,6 +26,13 @@ public class Network extends OshiMethod {
 
         return netInterfaces;
     }
+
+    public void testData() {
+
+        System.out.println(doTheShit());
+
+    }
+
 }
 
 class NetInterface {
