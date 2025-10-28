@@ -1,5 +1,3 @@
-package org.example;
-
 public class PhysicalCPU extends CPUGeneric {
     PhysicalCPU(){
         super();

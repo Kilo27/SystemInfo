@@ -1,5 +1,3 @@
-package org.example;
-
 import oshi.hardware.NetworkIF;
 
 import java.util.ArrayList;

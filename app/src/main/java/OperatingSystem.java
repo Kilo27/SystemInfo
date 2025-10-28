@@ -1,8 +1,5 @@
 //package org.example
 
-import oshi.SystemInfo;
-import oshi.software.os.OperatingSystem;
-
 /*
 class OperatingSystem {
     SystemInfo systeminfo = new SystemInfo();

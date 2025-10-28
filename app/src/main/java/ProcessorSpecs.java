@@ -1,10 +1,3 @@
-package org.example;
-
-import oshi.hardware.CentralProcessor;
-import oshi.util.FormatUtil;
-
-import java.util.List;
-
 public class ProcessorSpecs extends OshiMethod{
     ProcessorSpecs(){
         super();

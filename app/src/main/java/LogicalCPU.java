@@ -1,5 +1,3 @@
-package org.example;
-
 public class LogicalCPU extends CPUGeneric {
     LogicalCPU(){
         super();
