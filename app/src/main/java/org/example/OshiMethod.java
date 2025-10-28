@@ -330,7 +330,7 @@ class SysMemory extends OshiMethod{
     }
 }
 class Cache extends OshiMethod{
-    public List<ProcessorCache> caches
+    public List<ProcessorCache> caches;
     public Cache() {
         super();
         this.caches = cpu.getProcessorCaches();
@@ -388,7 +388,7 @@ class Disk extends OshiMethod {
         disks = hardware.getDiskStores();
     }
     
-    public int currentQueue(int i) {
+    public long currentQueue(int i) {
         return disks.get(i).getCurrentQueueLength();
     }
 
@@ -399,10 +399,10 @@ class Disk extends OshiMethod {
     public String diskName(int i) {
         return disks.get(i).getName();
     }
-    public List<HWPartition> diskPart(int i) {
+    public List<oshi.hardware.HWPartition> diskPart(int i) {
         return disks.get(i).getPartitions();
     }
-    public String readbytes(int i) {
+    public String readBytes(int i) {
         return FormatUtil.formatBytes(disks.get(i).getReadBytes());
     }
 
@@ -410,7 +410,7 @@ class Disk extends OshiMethod {
         return disks.get(i).getReads();
     }
 
-    public long size(int i) {
+    public String size(int i) {
         return FormatUtil.formatBytes(disks.get(i).getSize());
     }
 
@@ -422,8 +422,20 @@ class Disk extends OshiMethod {
         return FormatUtil.formatBytes(disks.get(i).getWriteBytes());
     }
 
-    public String writes(int i) {
+    public long writes(int i) {
         return disks.get(i).getWrites();
+    }
+    public void testData(){
+        System.out.printf("%-25s | %s\n", "Current Queue Length: ", currentQueue(0));
+        System.out.printf("%-25s | %s\n", "Model: ", diskModel(0));
+        System.out.printf("%-25s | %s\n", "Name: ", diskName(0));
+        System.out.printf("%-25s | %s\n", "Partitions: ", diskPart(0));
+        System.out.printf("%-25s | %s\n", "Read Bytes: ", readBytes(0));
+        System.out.printf("%-25s | %s\n", "Reads: ", reads(0));
+        System.out.printf("%-25s | %s\n", "Size: ", size(0));
+        System.out.printf("%-25s | %s milliseconds\n", "Transfer Time: ", transferTime(0));
+        System.out.printf("%-25s | %s\n", "Write Bytes: ", writeBytes(0));
+        System.out.printf("%-25s | %s\n", "Writes: ", writes(0));
     }
 }
 
