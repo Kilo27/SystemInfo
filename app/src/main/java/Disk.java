@@ -1,5 +1,3 @@
-package org.example;
-
 import oshi.hardware.HWDiskStore;
 import oshi.util.FormatUtil;
 
