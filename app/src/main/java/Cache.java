@@ -1,5 +1,3 @@
-package org.example;
-
 import oshi.hardware.CentralProcessor;
 
 import java.util.List;

@@ -1,5 +1,3 @@
-package org.example;
-
 import oshi.SystemInfo;
 import oshi.hardware.Sensors;
 import oshi.hardware.CentralProcessor;
@@ -10,6 +8,7 @@ import oshi.hardware.CentralProcessor.PhysicalProcessor;
 import oshi.hardware.CentralProcessor.ProcessorCache;
 import oshi.hardware.UsbDevice;
 import oshi.util.FormatUtil;
+import oshi.hardware.UsbDevice;
 import oshi.hardware.HWDiskStore;
 
 import java.util.List;
