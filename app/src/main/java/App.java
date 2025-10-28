@@ -92,6 +92,11 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
 class CPUMenuFrame extends AbstractSystemInfoFrame {
     public CPUMenuFrame() {
         super();
+        ProcessorSpecs specs = new ProcessorSpecs();
+        OshiMethod oshi = new OshiMethod();
+        LogicalCPU threadCpu = new LogicalCPU();
+        PhysicalCPU physicalCpu = new PhysicalCPU();
+        SysMemory memory = new SysMemory();
         setTitle("System Info - CPU");
         JLabel nameText = new JLabel(String.format("CPU: %s", ProcessorSpecs.name()));
         nameText.setBounds(480, 30, 500, 50);
@@ -111,6 +116,9 @@ class CPUMenuFrame extends AbstractSystemInfoFrame {
         JLabel microarchitecture = new JLabel(String.format("Microarchitecture: %s", ProcessorSpecs.microarchitecture()));
         microarchitecture.setBounds(480, 280, 500, 50);
         microarchitecture.setForeground(textColor);
+        JLabel maxFrequency = new JLabel(String.format("Max Frequency: %s", CPUGeneric.getMaxFrequency()));
+        maxFrequency.setBounds(480, 330, 500, 50);
+        maxFrequency.setForeground(textColor);
 
 
 
@@ -120,6 +128,7 @@ class CPUMenuFrame extends AbstractSystemInfoFrame {
         add(IDText);
         add(sixtyFourBitText);
         add(microarchitecture);
+        add(maxFrequency);
 
         setVisible(true);
     }
