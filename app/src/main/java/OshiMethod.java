@@ -14,12 +14,12 @@ import oshi.hardware.HWDiskStore;
 import java.util.List;
 
 
-class OshiMethod {
+public class OshiMethod {
 
-    protected SystemInfo systeminfo;
-    protected HardwareAbstractionLayer hardware;
-    protected CentralProcessor cpu;
-    protected GlobalMemory memory;
+    protected static SystemInfo systeminfo;
+    protected static HardwareAbstractionLayer hardware;
+    protected static CentralProcessor cpu;
+    protected static GlobalMemory memory;
 
 
     public OshiMethod() {
@@ -132,7 +132,7 @@ class OshiMethod {
         }
     }*/
 
-    public void printUSBDevices() {
+    public static void printUSBDevices() {
         List<UsbDevice> devices = hardware.getUsbDevices(true);
         System.out.println("\n=== USB Devices ===");
         for(UsbDevice device : devices) {

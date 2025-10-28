@@ -93,16 +93,33 @@ class CPUMenuFrame extends AbstractSystemInfoFrame {
     public CPUMenuFrame() {
         super();
         setTitle("System Info - CPU");
+        JLabel nameText = new JLabel(String.format("CPU: %s", ProcessorSpecs.name()));
+        nameText.setBounds(480, 30, 500, 50);
+        nameText.setForeground(textColor);
+        JLabel familyText = new JLabel(String.format("Processor Family: %s", ProcessorSpecs.family()));
+        familyText.setBounds(480, 80, 500, 50);
+        familyText.setForeground(textColor);
+        JLabel modelText = new JLabel(String.format("Model: %s", ProcessorSpecs.model()));
+        modelText.setBounds(480, 130, 500, 50);
+        modelText.setForeground(textColor);
+        JLabel IDText = new JLabel(String.format("ID: %s", ProcessorSpecs.id()));
+        IDText.setBounds(480, 180, 500, 50);
+        IDText.setForeground(textColor);
+        JLabel sixtyFourBitText = new JLabel(String.format("64 Bit: %s", ProcessorSpecs.is64Bit()));
+        sixtyFourBitText.setBounds(480, 230, 500, 50);
+        sixtyFourBitText.setForeground(textColor);
+        JLabel microarchitecture = new JLabel(String.format("Microarchitecture: %s", ProcessorSpecs.microarchitecture()));
+        microarchitecture.setBounds(480, 280, 500, 50);
+        microarchitecture.setForeground(textColor);
 
-        LogicalCPU logicalCPU = new LogicalCPU();
-
-        JLabel testText = new JLabel(String.format("CPU: %s", logicalCPU.name()));
-        testText.setBounds(480, 80, 500, 50);
-        testText.setForeground(textColor);
 
 
-
-        add(testText);
+        add(nameText);
+        add(familyText);
+        add(modelText);
+        add(IDText);
+        add(sixtyFourBitText);
+        add(microarchitecture);
 
         setVisible(true);
     }

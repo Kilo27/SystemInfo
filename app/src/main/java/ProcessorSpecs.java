@@ -2,22 +2,22 @@ public class ProcessorSpecs extends OshiMethod{
     ProcessorSpecs(){
         super();
     }
-    public String name(){
+    public static String name(){
         return cpu.getProcessorIdentifier().getName();
     }
-    public String family(){
+    public static String family(){
         return cpu.getProcessorIdentifier().getFamily();
     }
-    public String model(){
+    public static String model(){
         return cpu.getProcessorIdentifier().getModel();
     }
-    public String id(){
+    public static String id(){
         return cpu.getProcessorIdentifier().getProcessorID();
     }
-    public boolean is64Bit(){
+    public static boolean is64Bit(){
         return cpu.getProcessorIdentifier().isCpu64bit();
     }
-    public String microarchitecture(){
+    public static String microarchitecture(){
         return cpu.getProcessorIdentifier().getMicroarchitecture();
     }
     public void testData(){
