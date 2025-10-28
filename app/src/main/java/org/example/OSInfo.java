@@ -1,6 +1,8 @@
 package org.example;
 
 import oshi.SystemInfo;
+import oshi.software.osh.FileSystem;
+import oshi.software.OSProcess;
 import oshi.software.os.OperatingSystem;
 
 
@@ -9,7 +11,7 @@ class OSInfo {
     public SystemInfo systeminfo;
     public OperatingSystem os;
 
-    OSInfo() {
+    public OSInfo() {
         systeminfo = new SystemInfo();
         os = systeminfo.getOperatingSystem();
     }    
@@ -29,7 +31,12 @@ class OSInfo {
     public FileSystem fileSystem() {
         return os.getFileSystem();
     }
+//Current process
     public OSProcess currentProcess() {
         return os.getCurrentProcess();
+    }
+
+    public OSThread currentThread() {
+        return os.getCurrentThread();
     }
 }
