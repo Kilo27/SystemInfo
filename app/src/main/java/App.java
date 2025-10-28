@@ -98,6 +98,8 @@ class CPUMenuFrame extends AbstractSystemInfoFrame {
         testText.setBounds(480, 80, 50, 50);
         testText.setForeground(textColor);
 
+        LogicalCPU logicalCPU = new LogicalCPU();
+
         add(testText);
 
         setVisible(true);
