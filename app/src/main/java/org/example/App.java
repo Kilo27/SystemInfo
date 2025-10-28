@@ -3,33 +3,40 @@
  */
 package org.example;
 
+import com.sun.tools.javac.Main;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class App {
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        // System Info
-        ProcessorSpecs specs = new ProcessorSpecs();
-        OshiMethod oshi = new OshiMethod();
-        LogicalCPU threadCpu = new LogicalCPU();
-        PhysicalCPU physicalCpu = new PhysicalCPU();
-        SysMemory memory = new SysMemory();
+        MainMenuFrame mainMenuFrame = new MainMenuFrame();
+        mainMenuFrame.setVisible(true);
 
-        // JFrame Parameters
-        Color backgroundColor = Color.decode("#211832"); // Background Colour
-        Color textColor = Color.decode("#FFFFFF"); // Text Colour
-        int windowWidth = 1200;
-        int windowHeight = 800;
+    }
+}
 
-        // Creating instance of JFrame
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        frame.setSize(windowWidth, windowHeight);
-        frame.setLayout(null); // using no layout manager
-        frame.getContentPane().setBackground(backgroundColor); // set background color
+abstract class AbstractSystemInfoFrame extends JFrame {
+    Color backgroundColor = Color.decode("#211832"); // Background Colour
+    Color textColor = Color.decode("#FFFFFF"); // Text Colour
+    int windowWidth = 1200;
+    int windowHeight = 800;
 
+    protected AbstractSystemInfoFrame(){
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+        setSize(windowWidth, windowHeight);
+        setLayout(null); // using no layout manager
+        getContentPane().setBackground(backgroundColor); // set background color
+    }
+}
+
+class MainMenuFrame extends AbstractSystemInfoFrame {
+
+    public MainMenuFrame() {
+
+        super();
 
         // Buttons
         JButton[] selectMenuButtons = {
@@ -46,21 +53,16 @@ public class App {
         for (JButton button : selectMenuButtons) {
             button.setBounds(480, buttonDownShift, 200, 50);
             buttonDownShift += 50; // Moves down Y-Position for Next Button
-            frame.add(button);
+            add(button);
         }
 
         // OS Logo
         ImageIcon icon = new ImageIcon("assets/iconWindows11.png");
         JLabel osLogo = new JLabel(icon);
         osLogo.setBounds(550, 80, 50, 50);
-        frame.add(osLogo);
-
-        frame.setVisible(true); // making the frame visible
-
-        /*specs.testData();
-        physicalCpu.testData();
-        threadCpu.testData();
-        memory.testData();
-        oshi.printSysUtil();*/
+        add(osLogo);
     }
+
+
 }
+
