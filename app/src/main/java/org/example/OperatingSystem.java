@@ -5,18 +5,28 @@ import oshi.software.os.OperatingSystem;
 
 
 class OperatingSystem {
-    SystemInfo systeminfo = new SystemInfo();
-    OperatingSystem os = systeminfo.getOperatingSystem();
-    
 
+    public SystemInfo systeminfo;
+    public OperatingSystem os;
+
+    OperatingSystem() {
+        systeminfo = new SystemInfo();
+        os = systeminfo.getOperatingSystem();
+    }    
+//Returns Family of OS
     public String family() {
         return os.getFamily();
     }
-
+//returns manfacturer
     public String manufacturer() {
         return os.getManufacturer();
     }
+//returns os version 
     public OperatingSystemVersion versionInfo() {
         return os.getVersionInfo().getVersion();
+    }
+//file system
+    public FileSystem fileSystem() {
+        return os.getFileSystem();
     }
 }
