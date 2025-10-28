@@ -1,4 +1,3 @@
-package org.example;
 
 import oshi.SystemInfo;
 import oshi.software.osh.FileSystem;
