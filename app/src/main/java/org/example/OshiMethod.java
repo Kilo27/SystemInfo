@@ -119,19 +119,19 @@ class OshiMethod {
     }
     */
 
-    public void printCacheMemory() {
+    /*public void printCacheMemory() {
         System.out.println("\n=== Cache Memory ===");
         List<ProcessorCache> caches = cpu.getProcessorCaches();
 
         for (ProcessorCache cache : caches) {
             System.out.printf("%-25s | %s\n","Cache Level: " , cache.getLevel());
             System.out.printf("%-25s | %s\n","Cache Type: " , cache.getType());
-            System.out.printf("%-25s | %s\n","Cache Size: " , FormatUtil.formatBytes(cache.getCacheSize()));
-            System.out.printf("%-25s | %s\n","Cache Line Size: " , FormatUtil.formatBytes(cache.getLineSize()));
+            System.out.printf("%-25s | %s\n","Cache Size: " , formatBytes(cache.getCacheSize()));
+            System.out.printf("%-25s | %s\n","Cache Line Size: " , formatBytes(cache.getLineSize()));
             System.out.printf("%-25s | %s\n","Cache Associativity: " , cache.getAssociativity());
             System.out.println("====");
         }
-    }
+    }*/
 
     public void printUSBDevices() {
         List<UsbDevice> devices = hardware.getUsbDevices(true);
@@ -158,7 +158,7 @@ class OshiMethod {
             System.out.printf("%-25s | %s\n", "Reads: ", disk.getReads());
             System.out.printf("%-25s | %s\n", "Size: ", formatBytes(disk.getSize()));
             System.out.printf("%-25s | %s milliseconds\n", "Transfer Time: ", disk.getTransferTime());
-            System.out.printf("%-25s | %s\n", "Write Bytes: ", disk.getWriteBytes());
+            System.out.printf("%-25s | %s\n", "Write Bytes: ", formatBytes(disk.getWriteBytes()));
             System.out.printf("%-25s | %s\n", "Writes: ", disk.getWrites());
         }
     }
@@ -168,13 +168,13 @@ class OshiMethod {
         //printSystemSpecifics();
         //printCPU();
         //printMemory();
-        printCacheMemory();
+        //printCacheMemory();
         printUSBDevices();
         printDisks();
     }
 
 }
-class CPUGeneric extends ProcessorSpecs{
+abstract class CPUGeneric extends ProcessorSpecs{
     CPUGeneric(){
         super();
     }
@@ -306,7 +306,7 @@ class SysMemory extends OshiMethod{
     public long availableMemory(){
         return memory.getAvailable();
     }
-    public long freeMemory(){
+    public long usedMemory(){
         return memory.getTotal()-memory.getAvailable();
     }
     public long virtualMemory(){
@@ -323,10 +323,37 @@ class SysMemory extends OshiMethod{
         System.out.println("=== System Memory ===");
         System.out.println("Total Physical Memory     : " + formatBytes(totalMemory()));
         System.out.println("Available Physical Memory : " + formatBytes(availableMemory()));
-        System.out.println("Used Physical Memory      : " + formatBytes(freeMemory()));
+        System.out.println("Used Physical Memory      : " + formatBytes(usedMemory()));
         System.out.println("Total Virtual Memory (Swap): " + formatBytes(virtualMemory()));
         System.out.println("Used Virtual Memory (Swap) : " + formatBytes(availableVirtualMemory()));
         System.out.println("Memory Page Size          : " + formatBytes(pageSize()));
+    }
+}
+class Cache extends OshiMethod{
+    List<ProcessorCache> caches = cpu.getProcessorCaches();
+    public int getCacheLevel(int i){
+        return caches.get(i).getLevel();
+    }
+    public ProcessorCache.Type type(int i){
+        return caches.get(i).getType();
+    }
+    public int size(int i){
+        return caches.get(i).getCacheSize();
+    }
+    public int lineSize(int i){
+        return caches.get(i).getLineSize();
+    }
+    public int associativity(int i){
+        return caches.get(i).getAssociativity();
+    }
+    public void testData(){
+        System.out.println("\n=== Cache Memory ===");
+        System.out.printf("%-25s | %s\n","Cache Level: " , getCacheLevel(0));
+        System.out.printf("%-25s | %s\n","Cache Type: " , type(0));
+        System.out.printf("%-25s | %s\n","Cache Size: " , formatBytes(size(0)));
+        System.out.printf("%-25s | %s\n","Cache Line Size: " , formatBytes(lineSize(0)));
+        System.out.printf("%-25s | %s\n","Cache Associativity: " , associativity(0));
+        System.out.println("====");
     }
 }
 /* Used Chatgpt to check for any logic issues or improvements to current methods. -May implement this later
