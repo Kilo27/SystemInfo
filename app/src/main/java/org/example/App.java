@@ -24,15 +24,14 @@ public class App {
 
         // Creating instance of JFrame
         JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setSize(windowWidth, windowHeight);
-        frame.setLayout(null); // using no layout managers
-        frame.setVisible(true); // making the frame visible
+        frame.setLayout(null); // using no layout manager
         frame.getContentPane().setBackground(backgroundColor); // set background color
 
 
         // Buttons
-
         JButton[] selectMenuButtons = {
                 new JButton("CPU"),
                 new JButton("Graphics"),
@@ -43,12 +42,20 @@ public class App {
                 new JButton("PCI Devices")
         };
 
-        int buttonDownShift = 200; // Y-Position of Top Button
+        int buttonDownShift = 220; // Y-Position of Top Button
         for (JButton button : selectMenuButtons) {
             button.setBounds(480, buttonDownShift, 200, 50);
             buttonDownShift += 50; // Moves down Y-Position for Next Button
             frame.add(button);
         }
+
+        // OS Logo
+        ImageIcon icon = new ImageIcon("assets/iconWindows11.png");
+        JLabel osLogo = new JLabel(icon);
+        osLogo.setBounds(550, 80, 50, 50);
+        frame.add(osLogo);
+
+        frame.setVisible(true); // making the frame visible
 
         /*specs.testData();
         physicalCpu.testData();
