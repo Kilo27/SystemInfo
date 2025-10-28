@@ -3,9 +3,44 @@
  */
 package org.example;
 
+import java.io.*;
+import javax.swing.*;
+import java.awt.*;
+
 public class App {
     public static void main(String[] args){
+
+        // System Info
+        ProcessorSpecs specs = new ProcessorSpecs();
         OshiMethod oshi = new OshiMethod();
-        oshi.printSysUtil();
+        LogicalCPU threadCpu = new LogicalCPU();
+        PhysicalCPU physicalCpu = new PhysicalCPU();
+        SysMemory memory = new SysMemory();
+
+        // JFrame Parameters
+        Color backgroundColor = Color.decode("#211832"); // Background Colour
+        Color textColor = Color.decode("#FFFFFF"); // Text Colour
+        int windowWidth = 800;
+        int windowHeight = 600;
+
+        // Creating instance of JFrame
+        JFrame frame = new JFrame();
+        frame.setSize(windowWidth, windowHeight);
+        frame.setLayout(null); // using no layout managers
+        frame.setVisible(true); // making the frame visible
+        frame.getContentPane().setBackground(backgroundColor); // set background color
+
+        // Text Label
+        JLabel cpuNameLabel = new JLabel(String.format("Name: %s",specs.name()));
+        cpuNameLabel.setForeground(textColor);
+
+        cpuNameLabel.setBounds(100, 50, 300, 80);
+        frame.add(cpuNameLabel,BorderLayout.CENTER);
+
+        /*specs.testData();
+        physicalCpu.testData();
+        threadCpu.testData();
+        memory.testData();
+        oshi.printSysUtil();*/
     }
 }

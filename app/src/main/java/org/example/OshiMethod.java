@@ -30,6 +30,16 @@ class OshiMethod {
         initMemory();
         initSensors();
     }
+    protected String formatBytes(long bytes) {//This Function was written by chatGPT but is actually extremely useful, so I might keep it
+        double value = bytes;
+        String[] units = {"B", "KB", "MB", "GB", "TB"};
+        int i = 0;
+        while (value >= 1024 && i < units.length - 1) {
+            value /= 1024;
+            i++;
+        }
+        return String.format("%.2f %s", value, units[i]);
+    }
 
     public void initSystemInfo() {
         systeminfo = new SystemInfo();
@@ -51,7 +61,7 @@ class OshiMethod {
         Sensors sensor = hardware.getSensors();
     }
 
-    public void printSystemSpecifics() {
+    /*public void printSystemSpecifics() {
         System.out.println("\n=== System Specifications ===");
         System.out.printf("%-25s | %s\n ", "Name", cpu.getProcessorIdentifier().getName());
         System.out.printf("%-25s | %s\n ", "Family", cpu.getProcessorIdentifier().getFamily());
@@ -59,9 +69,9 @@ class OshiMethod {
         System.out.printf("%-25s | %s\n ", "Processor ID: ", cpu.getProcessorIdentifier().getProcessorID());
         System.out.printf("%-25s | %s\n", "Is Model 64 bit: ", cpu.getProcessorIdentifier().isCpu64bit());
         System.out.printf("%-25s | %s\n", "Microarchitecture: ", cpu.getProcessorIdentifier().getMicroarchitecture());
-    }
-
-    public void printCPU() {
+    }*/
+    //OverWritten in CPU Classes
+    /*public void printCPU() {
         long[] freqs = cpu.getCurrentFreq();
         long maxfreq = cpu.getMaxFreq();
         double[] cpuLoad = cpu.getProcessorCpuLoad(1000);
@@ -96,10 +106,10 @@ class OshiMethod {
         for(double tick : cpuLoad) {
             System.out.println(tick);
         }
-    }
+    }*/
     //%-25s | %s\n
 
-    public void printMemory() {
+    /*public void printMemory() {
         System.out.println("\n=== Memory ===");
         System.out.printf("%-25s | %s GB\n","Total Memory: " , FormatUtil.formatBytes(memory.getTotal()));
         System.out.printf("%-25s | %s GB\n","Available Memory: " , FormatUtil.formatBytes(memory.getAvailable()));
@@ -107,22 +117,23 @@ class OshiMethod {
         System.out.printf("%-25s | %s GB\n","Page Size: " , FormatUtil.formatBytes(memory.getPageSize()));
         System.out.printf("%-25s | %s\n", "Available Virtual Memory: ", FormatUtil.formatBytes(memory.getVirtualMemory().getSwapUsed()));
     }
+    */
 
-    public void printCacheMemory() {
+    /*public void printCacheMemory() {
         System.out.println("\n=== Cache Memory ===");
         List<ProcessorCache> caches = cpu.getProcessorCaches();
 
         for (ProcessorCache cache : caches) {
             System.out.printf("%-25s | %s\n","Cache Level: " , cache.getLevel());
             System.out.printf("%-25s | %s\n","Cache Type: " , cache.getType());
-            System.out.printf("%-25s | %s\n","Cache Size: " , FormatUtil.formatBytes(cache.getCacheSize()));
-            System.out.printf("%-25s | %s\n","Cache Line Size: " , FormatUtil.formatBytes(cache.getLineSize()));
+            System.out.printf("%-25s | %s\n","Cache Size: " , formatBytes(cache.getCacheSize()));
+            System.out.printf("%-25s | %s\n","Cache Line Size: " , formatBytes(cache.getLineSize()));
             System.out.printf("%-25s | %s\n","Cache Associativity: " , cache.getAssociativity());
             System.out.println("====");
         }
-    }
+    }*/
 
-    public void printUSBdevices() {
+    public void printUSBDevices() {
         List<UsbDevice> devices = hardware.getUsbDevices(true);
         System.out.println("\n=== USB Devices ===");
         for(UsbDevice device : devices) {
@@ -143,27 +154,27 @@ class OshiMethod {
             System.out.printf("%-25s | %s\n", "Model: ", disk.getModel());
             System.out.printf("%-25s | %s\n", "Name: ", disk.getName());
             System.out.printf("%-25s | %s\n", "Partitions: ", disk.getPartitions());
-            System.out.printf("%-25s | %s\n", "Read Bytes: ", disk.getReadBytes());
+            System.out.printf("%-25s | %s\n", "Read Bytes: ", formatBytes(disk.getReadBytes()));
             System.out.printf("%-25s | %s\n", "Reads: ", disk.getReads());
-            System.out.printf("%-25s | %s\n", "Size: ", disk.getSize());
+            System.out.printf("%-25s | %s\n", "Size: ", formatBytes(disk.getSize()));
             System.out.printf("%-25s | %s milliseconds\n", "Transfer Time: ", disk.getTransferTime());
-            System.out.printf("%-25s | %s\n", "Write Bytes: ", disk.getWriteBytes());
+            System.out.printf("%-25s | %s\n", "Write Bytes: ", formatBytes(disk.getWriteBytes()));
             System.out.printf("%-25s | %s\n", "Writes: ", disk.getWrites());
         }
     }
 
 
     public void printSysUtil() {
-        printSystemSpecifics();
-        printCPU();
-        printMemory();
-        printCacheMemory();
-        printUSBdevices();
+        //printSystemSpecifics();
+        //printCPU();
+        //printMemory();
+        //printCacheMemory();
+        printUSBDevices();
         printDisks();
     }
 
 }
-class CPUGeneric extends ProcessorSpecs{
+abstract class CPUGeneric extends ProcessorSpecs{
     CPUGeneric(){
         super();
     }
@@ -275,8 +286,17 @@ class ProcessorSpecs extends OshiMethod{
     public String microarchitecture(){
         return cpu.getProcessorIdentifier().getMicroarchitecture();
     }
+    public void testData(){
+        System.out.printf("%-25s | %s\n","Processor Name: " , name());
+        System.out.printf("%-25s | %s\n","Processor Family: " , family());
+        System.out.printf("%-25s | Processor Model: " , model());
+        System.out.printf("%-25s | Processor ID: " , id());
+        System.out.printf("%-25s | 64 Bit: " , is64Bit());
+        System.out.printf("%-25s | Microarchitecture: " , microarchitecture());
+    }
 }
 class SysMemory extends OshiMethod{
+
     SysMemory(){
         super();
     }
@@ -286,7 +306,7 @@ class SysMemory extends OshiMethod{
     public long availableMemory(){
         return memory.getAvailable();
     }
-    public long freeMemory(){
+    public long usedMemory(){
         return memory.getTotal()-memory.getAvailable();
     }
     public long virtualMemory(){
@@ -297,6 +317,43 @@ class SysMemory extends OshiMethod{
     }
     public long availableVirtualMemory(){
         return memory.getVirtualMemory().getSwapUsed();
+    }
+    public void testData(){
+        System.out.println();
+        System.out.println("=== System Memory ===");
+        System.out.println("Total Physical Memory     : " + formatBytes(totalMemory()));
+        System.out.println("Available Physical Memory : " + formatBytes(availableMemory()));
+        System.out.println("Used Physical Memory      : " + formatBytes(usedMemory()));
+        System.out.println("Total Virtual Memory (Swap): " + formatBytes(virtualMemory()));
+        System.out.println("Used Virtual Memory (Swap) : " + formatBytes(availableVirtualMemory()));
+        System.out.println("Memory Page Size          : " + formatBytes(pageSize()));
+    }
+}
+class Cache extends OshiMethod{
+    List<ProcessorCache> caches = cpu.getProcessorCaches();
+    public int getCacheLevel(int i){
+        return caches.get(i).getLevel();
+    }
+    public ProcessorCache.Type type(int i){
+        return caches.get(i).getType();
+    }
+    public int size(int i){
+        return caches.get(i).getCacheSize();
+    }
+    public int lineSize(int i){
+        return caches.get(i).getLineSize();
+    }
+    public int associativity(int i){
+        return caches.get(i).getAssociativity();
+    }
+    public void testData(){
+        System.out.println("\n=== Cache Memory ===");
+        System.out.printf("%-25s | %s\n","Cache Level: " , getCacheLevel(0));
+        System.out.printf("%-25s | %s\n","Cache Type: " , type(0));
+        System.out.printf("%-25s | %s\n","Cache Size: " , formatBytes(size(0)));
+        System.out.printf("%-25s | %s\n","Cache Line Size: " , formatBytes(lineSize(0)));
+        System.out.printf("%-25s | %s\n","Cache Associativity: " , associativity(0));
+        System.out.println("====");
     }
 }
 /* Used Chatgpt to check for any logic issues or improvements to current methods. -May implement this later
