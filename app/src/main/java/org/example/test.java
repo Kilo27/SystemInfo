@@ -7,6 +7,7 @@ public class test {
         LogicalCPU threadCpu = new LogicalCPU();
         PhysicalCPU physicalCpu = new PhysicalCPU();
         SysMemory memory = new SysMemory();
+
         specs.testData();
         physicalCpu.testData();
         threadCpu.testData();
