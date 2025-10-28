@@ -1,5 +1,3 @@
-package org.example;
-
 public class test {
     public static void main(String[] args) {
         ProcessorSpecs specs = new ProcessorSpecs();
@@ -7,6 +5,7 @@ public class test {
         LogicalCPU threadCpu = new LogicalCPU();
         PhysicalCPU physicalCpu = new PhysicalCPU();
         SysMemory memory = new SysMemory();
+
         specs.testData();
         physicalCpu.testData();
         threadCpu.testData();

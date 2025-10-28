@@ -1,5 +1,3 @@
-package org.example;
-
 import oshi.hardware.UsbDevice;
 
 import java.util.List;

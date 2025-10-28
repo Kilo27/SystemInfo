@@ -1,15 +1,9 @@
-package org.example;
-
 import oshi.SystemInfo;
 import oshi.hardware.Sensors;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
-import oshi.hardware.CentralProcessor.LogicalProcessor;
-import oshi.hardware.CentralProcessor.PhysicalProcessor;
-import oshi.hardware.CentralProcessor.ProcessorCache;
 import oshi.hardware.UsbDevice;
-import oshi.util.FormatUtil;
 import oshi.hardware.HWDiskStore;
 
 import java.util.List;
