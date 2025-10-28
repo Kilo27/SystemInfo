@@ -3,7 +3,6 @@
  */
 package org.example;
 
-import java.io.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,22 +19,43 @@ public class App {
         // JFrame Parameters
         Color backgroundColor = Color.decode("#211832"); // Background Colour
         Color textColor = Color.decode("#FFFFFF"); // Text Colour
-        int windowWidth = 800;
-        int windowHeight = 600;
+        int windowWidth = 1200;
+        int windowHeight = 800;
 
         // Creating instance of JFrame
         JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
         frame.setSize(windowWidth, windowHeight);
-        frame.setLayout(null); // using no layout managers
-        frame.setVisible(true); // making the frame visible
+        frame.setLayout(null); // using no layout manager
         frame.getContentPane().setBackground(backgroundColor); // set background color
 
-        // Text Label
-        JLabel cpuNameLabel = new JLabel(String.format("Name: %s",specs.name()));
-        cpuNameLabel.setForeground(textColor);
 
-        cpuNameLabel.setBounds(100, 50, 300, 80);
-        frame.add(cpuNameLabel,BorderLayout.CENTER);
+        // Buttons
+        JButton[] selectMenuButtons = {
+                new JButton("CPU"),
+                new JButton("Graphics"),
+                new JButton("Memory"),
+                new JButton("Disks"),
+                new JButton("Network"),
+                new JButton("USB Devices"),
+                new JButton("PCI Devices")
+        };
+
+        int buttonDownShift = 220; // Y-Position of Top Button
+        for (JButton button : selectMenuButtons) {
+            button.setBounds(480, buttonDownShift, 200, 50);
+            buttonDownShift += 50; // Moves down Y-Position for Next Button
+            frame.add(button);
+        }
+
+        // OS Logo
+        ImageIcon icon = new ImageIcon("assets/iconWindows11.png");
+        JLabel osLogo = new JLabel(icon);
+        osLogo.setBounds(550, 80, 50, 50);
+        frame.add(osLogo);
+
+        frame.setVisible(true); // making the frame visible
 
         /*specs.testData();
         physicalCpu.testData();
