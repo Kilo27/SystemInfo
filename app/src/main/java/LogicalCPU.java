@@ -37,6 +37,6 @@ public class LogicalCPU extends CPUGeneric {
         System.out.println(processorNumber(0));
         */
         System.out.println(getCurrentFrequency(0));
-        System.out.println(getMaxFrequency(0));
+        System.out.println(getMaxFrequency());
     }
 }

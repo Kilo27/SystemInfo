@@ -26,6 +26,6 @@ public class PhysicalCPU extends CPUGeneric {
         System.out.println(processorEfficiency(0));
         */
         System.out.println(getCurrentFrequency(0));
-        System.out.println(getMaxFrequency(0));
+        System.out.println(getMaxFrequency());
     }
 }
