@@ -29,9 +29,11 @@ public class Disk extends OshiMethod {
         return FormatUtil.formatBytes(disks.get(i).getReadBytes());
     }
     public long readBytesFormatNumbers(int i){
+        System.out.printf("Read Bytes: %s\n",FormatUtil.formatBytes(disks.get(i).getReadBytes()));
         return disks.get(i).getReadBytes();
     }
     public long writeBytesFormatNumbers(int i){
+        System.out.printf("Written Bytes: %s\n",FormatUtil.formatBytes(disks.get(i).getWriteBytes()));
         return disks.get(i).getWriteBytes();
     }
 
@@ -45,6 +47,9 @@ public class Disk extends OshiMethod {
 
     public String transferTime(int i) {
         return disks.get(i).getTransferTime() + " milliseconds";
+    }
+    public long transferTimeFormatNumbers(int i) {
+        return disks.get(i).getTransferTime();
     }
 
     public String writeBytes(int i) {

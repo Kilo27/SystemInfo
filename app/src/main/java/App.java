@@ -82,7 +82,13 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
                 dispose();
             }
         });
-
+        selectMenuButtons[3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new DisksMenuFrame();
+                dispose();
+            }
+        });
 
         // OS Logo
 		ImageIcon icon = new ImageIcon("assets/iconWindows11.png");
@@ -358,8 +364,9 @@ class DisksMenuFrame extends AbstractSystemInfoFrame {
 					System.arraycopy(samples, 1, samples, 0, samples.length - 1);
 					System.arraycopy(samples2, 1, samples2, 0, samples2.length - 1);
 					// replace this with real disk data when available
-					samples[samples.length - 1] = (float) disk.readBytesFormatNumbers(0) / 100f;
-					samples2[samples2.length - 1] = (float) disk.writeBytesFormatNumbers(0) / 100f;
+                    System.out.printf("Disk Usage %f\n",(float) disk.readBytesFormatNumbers(0) / disk.transferTimeFormatNumbers(0));
+					samples[samples.length - 1] = (float) disk.readBytesFormatNumbers(0) / (disk.transferTimeFormatNumbers(0)*10*10*10*10*10);
+					samples2[samples2.length - 1] = (float) disk.writeBytesFormatNumbers(0) / (disk.transferTimeFormatNumbers(0)*10*10*10*10*10);
 					repaint();
 				});
                 timer.start();
