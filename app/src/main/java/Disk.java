@@ -28,6 +28,12 @@ public class Disk extends OshiMethod {
     public String readBytes(int i) {
         return FormatUtil.formatBytes(disks.get(i).getReadBytes());
     }
+    public long readBytesFormatNumbers(int i){
+        return disks.get(i).getReadBytes();
+    }
+    public long writeBytesFormatNumbers(int i){
+        return disks.get(i).getWriteBytes();
+    }
 
     public long reads(int i)  {
         return disks.get(i).getReads();

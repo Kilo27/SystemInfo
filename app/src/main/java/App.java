@@ -332,6 +332,95 @@ class DisksMenuFrame extends AbstractSystemInfoFrame {
 	public DisksMenuFrame() {
 		super();
 		setTitle("System Info - Disks");
+        Disk disk = new Disk();
+        // Button to open a simple CPU-usage graph window
+        JButton showGraphButton = new JButton("Show Disk Usage Graph");
+        showGraphButton.setBounds(700, 330, 150, 40);
+        add(showGraphButton);
+
+        // Local panel class that renders a simple live-updating line graph
+        class DiskUsageGraphPanel extends JPanel {
+            private final float[] samples = new float[200];
+            private final float[] samples2 = new float[200];
+            private final Timer timer;
+
+            DiskUsageGraphPanel() {
+                setPreferredSize(new Dimension(800, 400));
+                setBackground(Color.BLACK);
+
+                // initialize samples
+                for (int i = 0; i < samples.length; i++)
+                    samples[i] = 0f;
+                for (int a=0; a<samples2.length; a++)
+                    samples2[a] = 0f;
+                // update samples periodically (simulated data)
+                timer = new Timer(1000, e -> {
+                    System.arraycopy(samples, 1, samples, 0, samples.length - 1);
+                    System.arraycopy(samples2, 0, samples2, 0, samples2.length);
+                    // replace this with real CPU data when available
+                    samples[samples.length - 1] = (float) disk.readBytesFormatNumbers(0) / 100f;
+                    samples2[samples2.length-1] = (float) disk.writeBytesFormatNumbers(0) / 100f;
+                    repaint();
+                });
+                timer.start();
+            }
+
+            protected void paintComponent(java.awt.Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                int w = getWidth();
+                int h = getHeight();
+
+                // background
+                g2.setColor(Color.DARK_GRAY);
+                g2.fillRect(0, 0, w, h);
+
+                // grid
+                g2.setColor(new Color(80, 80, 80));
+                for (int y = 0; y <= 4; y++) {
+                    int yy = y * h / 4;
+                    g2.drawLine(0, yy, w, yy);
+                }
+
+                // draw line
+                g2.setColor(Color.GREEN);
+                int len = samples.length;
+                int prevX = 0;
+                int prevY = h - Math.round(samples[0] * h);
+                for (int i = 1; i < len; i++) {
+                    int x = i * w / (len - 1);
+                    int y = h - Math.round(samples[i] * h);
+                    g2.drawLine(prevX, prevY, x, y);
+                    prevX = x;
+                    prevY = y;
+                }
+
+                // label
+                g2.setColor(Color.WHITE);
+                g2.drawString("Simulated Disk Usage (%)", 8, 18);
+            }
+
+            public void removeNotify() {
+                timer.stop();
+                super.removeNotify();
+            }
+        }
+
+        showGraphButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame graphFrame = new JFrame("CPU Usage Graph");
+                graphFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                DiskUsageGraphPanel panel = new DiskUsageGraphPanel();
+                graphFrame.getContentPane().add(panel);
+                graphFrame.pack();
+                graphFrame.setLocationRelativeTo(null);
+                graphFrame.setVisible(true);
+            }
+        });
+        setVisible(true);
 	}
 }
 
