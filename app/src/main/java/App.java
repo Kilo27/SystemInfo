@@ -50,15 +50,6 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
 				new JButton("PCI Devices")
 		};
 
-		Class<? extends AbstractSystemInfoFrame>[] frameClasses = new Class[] {
-				CPUMenuFrame.class,
-				GraphicsMenuFrame.class,
-				MemoryMenuFrame.class,
-				DisksMenuFrame.class,
-				NetworkMenuFrame.class,
-				USBDevicesMenuFrame.class,
-				PCIDevicesMenuFrame.class
-		};
 
 		int buttonDownShift = 220; // Y-Position of Top Button
 		for (JButton button : selectMenuButtons) {
@@ -90,11 +81,39 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
             }
         });
 
-        // OS Logo
-		ImageIcon icon = new ImageIcon("assets/iconWindows11.png");
-		JLabel osLogo = new JLabel(icon);
-		osLogo.setBounds(550, 80, 50, 50);
-		add(osLogo);
+        // OS
+        OSInfo osInfo = new OSInfo();
+
+		JLabel osNameLabel = new JLabel(String.format("OS Name: %s", osInfo.family()));
+        osNameLabel.setForeground(textColor);
+        osNameLabel.setBounds(480,70,200,20);
+
+        JLabel osManufacturerLabel = new JLabel(String.format("OS Manufacturer: %s", osInfo.manufacturer()));
+        osManufacturerLabel.setForeground(textColor);
+        osManufacturerLabel.setBounds(480,90,200,20);
+
+        JLabel osVersionLabel = new JLabel(String.format("OS Version: %s", osInfo.versionInfo()));
+        osVersionLabel.setForeground(textColor);
+        osVersionLabel.setBounds(480,110,200,20);
+
+        JLabel osFileSystemLabel = new JLabel(String.format("File System: %s", osInfo.fileSystem()));
+        osFileSystemLabel.setForeground(textColor);
+        osFileSystemLabel.setBounds(400,130,380,20);
+
+        JLabel osCurrentProcessLabel = new JLabel(String.format("Current Process: %s", osInfo.currentProcess()));
+        osCurrentProcessLabel.setForeground(textColor);
+        osCurrentProcessLabel.setBounds(400,150,380,20);
+
+        JLabel osCurrentThreadLabel = new JLabel(String.format("Current Thread: %s", osInfo.currentThread()));
+        osCurrentThreadLabel.setForeground(textColor);
+        osCurrentThreadLabel.setBounds(400,170,380,20);
+
+        add(osNameLabel);
+        add(osManufacturerLabel);
+        add(osVersionLabel);
+        add(osFileSystemLabel);
+        add(osCurrentProcessLabel);
+        add(osCurrentThreadLabel);
 
 		// Make Frame Visible
 		setVisible(true);
@@ -111,6 +130,22 @@ class CPUMenuFrame extends AbstractSystemInfoFrame {
 		PhysicalCPU physicalCpu = new PhysicalCPU();
 		SysMemory memory = new SysMemory();
 		setTitle("System Info - CPU");
+
+        // Main Menu Button
+        JButton mainMenuButton = new  JButton("Main Menu");
+        mainMenuButton.setBounds(0, 0, 150, 50);
+
+        mainMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MainMenuFrame();
+                dispose();
+            }
+        });
+
+        add(mainMenuButton);
+
+
 		JLabel nameText = new JLabel(String.format("CPU: %s", ProcessorSpecs.name()));
 		nameText.setBounds(480, 30, 500, 50);
 		nameText.setForeground(textColor);
@@ -217,6 +252,7 @@ class CPUMenuFrame extends AbstractSystemInfoFrame {
 				graphFrame.setVisible(true);
 			}
 		});
+
 		add(nameText);
 		add(familyText);
 		add(modelText);
@@ -234,6 +270,20 @@ class GraphicsMenuFrame extends AbstractSystemInfoFrame {
 		super();
 		setTitle("System Info - Graphics");
 
+        // Main Menu Button
+        JButton mainMenuButton = new  JButton("Main Menu");
+        mainMenuButton.setBounds(0, 0, 150, 50);
+
+        mainMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MainMenuFrame();
+                dispose();
+            }
+        });
+
+        add(mainMenuButton);
+
 	}
 }
 
@@ -245,6 +295,44 @@ class MemoryMenuFrame extends AbstractSystemInfoFrame {
         JLabel nameText = new JLabel("CPU: Hello");
         nameText.setBounds(480, 30, 500, 50);
         nameText.setForeground(textColor);
+
+        // Main Menu Button
+        JButton mainMenuButton = new  JButton("Main Menu");
+        mainMenuButton.setBounds(0, 0, 150, 50);
+
+        mainMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MainMenuFrame();
+                dispose();
+            }
+        });
+
+        add(mainMenuButton);
+
+        JLabel totalMemoryLabel = new JLabel(String.format("Total Memory: %s", memory.formatBytes(memory.totalMemory())));
+        totalMemoryLabel.setBounds(480, 30, 500, 50);
+        totalMemoryLabel.setForeground(textColor);
+
+        JLabel availableMemoryLabel = new JLabel(String.format("Available Memory: %s", memory.formatBytes(memory.availableMemory())));
+        availableMemoryLabel.setBounds(480, 80, 500, 50);
+        availableMemoryLabel.setForeground(textColor);
+
+        JLabel usedMemoryLabel = new JLabel(String.format("Used Memory: %s", memory.formatBytes(memory.usedMemory())));
+        usedMemoryLabel.setBounds(480, 130, 500, 50);
+        usedMemoryLabel.setForeground(textColor);
+
+            JLabel virtualMemoryLabel = new JLabel(String.format("Virtual Memory: %s", memory.formatBytes(memory.virtualMemory())));
+        virtualMemoryLabel.setBounds(480, 180, 500, 50);
+        virtualMemoryLabel.setForeground(textColor);
+
+        JLabel pageSizeLabel = new JLabel(String.format("Page Size: %s", memory.formatBytes(memory.pageSize())));
+        pageSizeLabel.setBounds(480, 230, 500, 50);
+        pageSizeLabel.setForeground(textColor);
+
+        JLabel availableVirtualMemoryLabel = new JLabel(String.format("Available Virtual Memory: %s", memory.formatBytes(memory.availableVirtualMemory())));
+        availableVirtualMemoryLabel.setBounds(480, 280, 500, 50);
+        availableVirtualMemoryLabel.setForeground(textColor);
 
         // Button to open a simple CPU-usage graph window
         JButton showGraphButton = new JButton("Show Memory Graph");
@@ -329,6 +417,14 @@ class MemoryMenuFrame extends AbstractSystemInfoFrame {
                 graphFrame.setVisible(true);
             }
         });
+
+        add(totalMemoryLabel);
+        add(availableMemoryLabel);
+        add(usedMemoryLabel);
+        add(virtualMemoryLabel);
+        add(pageSizeLabel);
+        add(availableVirtualMemoryLabel);
+
         setVisible(true);
 	}
 }
@@ -338,6 +434,21 @@ class DisksMenuFrame extends AbstractSystemInfoFrame {
 		super();
 		setTitle("System Info - Disks");
         Disk disk = new Disk();
+
+        // Main Menu Button
+        JButton mainMenuButton = new  JButton("Main Menu");
+        mainMenuButton.setBounds(0, 0, 150, 50);
+
+        mainMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MainMenuFrame();
+                dispose();
+            }
+        });
+
+        add(mainMenuButton);
+
         // Button to open a simple CPU-usage graph window
         JButton showGraphButton = new JButton("Show Disk Usage Graph");
         showGraphButton.setBounds(700, 330, 150, 40);
@@ -458,6 +569,20 @@ class NetworkMenuFrame extends AbstractSystemInfoFrame {
 	public NetworkMenuFrame() {
 		super();
 		setTitle("System Info - Network");
+
+        // Main Menu Button
+        JButton mainMenuButton = new  JButton("Main Menu");
+        mainMenuButton.setBounds(0, 0, 150, 50);
+
+        mainMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MainMenuFrame();
+                dispose();
+            }
+        });
+
+        add(mainMenuButton);
 	}
 }
 
@@ -465,6 +590,20 @@ class USBDevicesMenuFrame extends AbstractSystemInfoFrame {
 	public USBDevicesMenuFrame() {
 		super();
 		setTitle("System Info - USB Devices");
+
+        // Main Menu Button
+        JButton mainMenuButton = new  JButton("Main Menu");
+        mainMenuButton.setBounds(0, 0, 150, 50);
+
+        mainMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MainMenuFrame();
+                dispose();
+            }
+        });
+
+        add(mainMenuButton);
 	}
 }
 
@@ -472,5 +611,19 @@ class PCIDevicesMenuFrame extends AbstractSystemInfoFrame {
 	public PCIDevicesMenuFrame() {
 		super();
 		setTitle("System Info - PCI Devices");
+
+        // Main Menu Button
+        JButton mainMenuButton = new  JButton("Main Menu");
+        mainMenuButton.setBounds(0, 0, 150, 50);
+
+        mainMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MainMenuFrame();
+                dispose();
+            }
+        });
+
+        add(mainMenuButton);
 	}
 }
