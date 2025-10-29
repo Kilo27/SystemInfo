@@ -5,11 +5,12 @@ public class test {
         LogicalCPU threadCpu = new LogicalCPU();
         PhysicalCPU physicalCpu = new PhysicalCPU();
         SysMemory memory = new SysMemory();
-
+        Network network = new Network();
         specs.testData();
         physicalCpu.testData();
         threadCpu.testData();
         memory.testData();
         oshi.printSysUtil();
+        network.testData();
     }
 }

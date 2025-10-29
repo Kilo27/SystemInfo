@@ -1,7 +1,8 @@
 
 import oshi.SystemInfo;
-import oshi.software.osh.FileSystem;
-import oshi.software.OSProcess;
+import oshi.software.os.FileSystem;
+import oshi.software.os.OSProcess;
+import oshi.software.os.OSThread;
 import oshi.software.os.OperatingSystem;
 
 
@@ -35,7 +36,6 @@ class OSInfo {
         return os.getCurrentProcess();
     }
 
-    public OSThread currentThread() {
-        return os.getCurrentThread();
+    public OSThread currentThread() {return os.getCurrentThread();
     }
 }
