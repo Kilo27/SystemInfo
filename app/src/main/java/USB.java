@@ -33,7 +33,7 @@ public class USB extends OshiMethod {
         info.vendorId = device.getVendorId();
         info.productId = device.getProductId();
         info.serialNumber = device.getSerialNumber();
-        info.connected = device.isConnected();
+        //info.connected = device.isConnected();
         info.uniqueId = device.getUniqueDeviceId();
 
         for (UsbDevice child : device.getConnectedDevices()) {

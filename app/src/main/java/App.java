@@ -47,7 +47,6 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
 				new JButton("Disks"),
 				new JButton("Network"),
 				new JButton("USB Devices"),
-				new JButton("PCI Devices")
 		};
 
 
@@ -66,6 +65,13 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
 				dispose();
 			}
 		});
+        selectMenuButtons[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GraphicsMenuFrame();
+                dispose();
+            }
+        });
         selectMenuButtons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -270,6 +276,8 @@ class GraphicsMenuFrame extends AbstractSystemInfoFrame {
 		super();
 		setTitle("System Info - Graphics");
 
+        Graphics graphics = new  Graphics();
+
         // Main Menu Button
         JButton mainMenuButton = new  JButton("Main Menu");
         mainMenuButton.setBounds(0, 0, 150, 50);
@@ -283,6 +291,27 @@ class GraphicsMenuFrame extends AbstractSystemInfoFrame {
         });
 
         add(mainMenuButton);
+
+        // Labels
+        JLabel[] graphicsLabels = {
+                new JLabel(String.format("GPU Name: %s", graphics.graphicsName(0))),
+                new JLabel(String.format("GPU Device ID: %s", graphics.graphicsDeviceId(0))),
+                new JLabel(String.format("GPU Vendor: %s", graphics.graphicsVendor(0))),
+                new JLabel(String.format("VRAM: %s", graphics.vramBytes(0))),
+                new JLabel(String.format("GPU Version Information: %s", graphics.graphicsVersionInfo(0))),
+                new JLabel(String.format("GPU Count: %d", graphics.gpuCount()))
+        };
+
+
+        int labelDownShift = 30; // Y-Position of Top Button
+        for (JLabel iLabel : graphicsLabels) {
+            iLabel.setBounds(480, labelDownShift, 300, 50);
+            iLabel.setForeground(textColor);
+            labelDownShift += 50; // Moves down Y-Position for Next Button
+            add(iLabel);
+        }
+
+        setVisible(true);
 
 	}
 }
@@ -449,6 +478,29 @@ class DisksMenuFrame extends AbstractSystemInfoFrame {
 
         add(mainMenuButton);
 
+        // Labels
+        JLabel[] diskLabels = {
+                new JLabel(String.format("Disk Size: %s", disk.size(0))),
+                new JLabel(String.format("Disk Model: %s", disk.diskModel(0))),
+                new JLabel(String.format("Disk Name: %s", disk.diskName(0))),
+                new JLabel(String.format("Current Queue: %s", disk.currentQueue(0))),
+                new JLabel(String.format("Transfer Time: %s", disk.transferTime(0))),
+                new JLabel(String.format("Read Bytes: %s", disk.readBytes(0))),
+                new JLabel(String.format("Write Bytes: %s", disk.writeBytes(0))),
+                new JLabel(String.format("Total Reads: %s", disk.reads(0))),
+                new JLabel(String.format("Total Writes: %s", disk.writes(0))),
+
+        };
+
+
+        int labelDownShift = 30; // Y-Position of Top Button
+        for (JLabel iLabel : diskLabels) {
+            iLabel.setBounds(480, labelDownShift, 300, 50);
+            iLabel.setForeground(textColor);
+            labelDownShift += 50; // Moves down Y-Position for Next Button
+            add(iLabel);
+        }
+
         // Button to open a simple CPU-usage graph window
         JButton showGraphButton = new JButton("Show Disk Usage Graph");
         showGraphButton.setBounds(700, 330, 150, 40);
@@ -561,6 +613,9 @@ class DisksMenuFrame extends AbstractSystemInfoFrame {
                 graphFrame.setVisible(true);
             }
         });
+
+
+
         setVisible(true);
 	}
 }
@@ -590,27 +645,6 @@ class USBDevicesMenuFrame extends AbstractSystemInfoFrame {
 	public USBDevicesMenuFrame() {
 		super();
 		setTitle("System Info - USB Devices");
-
-        // Main Menu Button
-        JButton mainMenuButton = new  JButton("Main Menu");
-        mainMenuButton.setBounds(0, 0, 150, 50);
-
-        mainMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new MainMenuFrame();
-                dispose();
-            }
-        });
-
-        add(mainMenuButton);
-	}
-}
-
-class PCIDevicesMenuFrame extends AbstractSystemInfoFrame {
-	public PCIDevicesMenuFrame() {
-		super();
-		setTitle("System Info - PCI Devices");
 
         // Main Menu Button
         JButton mainMenuButton = new  JButton("Main Menu");
