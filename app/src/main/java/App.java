@@ -3,175 +3,335 @@
  */
 
 import javax.swing.*;
+import javax.swing.JComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class App {
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        MainMenuFrame mainMenuFrame = new MainMenuFrame();
+		MainMenuFrame mainMenuFrame = new MainMenuFrame();
 
-
-
-    }
+	}
 }
 
 abstract class AbstractSystemInfoFrame extends JFrame {
-    Color backgroundColor = Color.decode("#211832"); // Background Colour
-    Color textColor = Color.decode("#FFFFFF"); // Text Colour
-    int windowWidth = 1200;
-    int windowHeight = 800;
+	Color backgroundColor = Color.decode("#211832"); // Background Colour
+	Color textColor = Color.decode("#FFFFFF"); // Text Colour
+	int windowWidth = 1200;
+	int windowHeight = 800;
 
-    protected AbstractSystemInfoFrame(){
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Exiting the window ends the program
-        setResizable(false);
-        setSize(windowWidth, windowHeight);
-        setLayout(null); // using no layout manager
-        getContentPane().setBackground(backgroundColor); // set background color
-    }
+	protected AbstractSystemInfoFrame() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Exiting the window ends the program
+		setResizable(false);
+		setSize(windowWidth, windowHeight);
+		setLayout(null); // using no layout manager
+		getContentPane().setBackground(backgroundColor); // set background color
+	}
 }
 
 class MainMenuFrame extends AbstractSystemInfoFrame {
 
-    public MainMenuFrame() {
+	public MainMenuFrame() {
 
-        super();
-        setTitle("System Info - Main Menu");
+		super();
+		setTitle("System Info - Main Menu");
 
-        // Buttons
-        JButton[] selectMenuButtons = {
-                new JButton("CPU"),
-                new JButton("Graphics"),
-                new JButton("Memory"),
-                new JButton("Disks"),
-                new JButton("Network"),
-                new JButton("USB Devices"),
-                new JButton("PCI Devices")
-        };
+		// Buttons
+		JButton[] selectMenuButtons = {
+				new JButton("CPU"),
+				new JButton("Graphics"),
+				new JButton("Memory"),
+				new JButton("Disks"),
+				new JButton("Network"),
+				new JButton("USB Devices"),
+				new JButton("PCI Devices")
+		};
 
-        Class<? extends AbstractSystemInfoFrame>[] frameClasses = new Class[]{
-                CPUMenuFrame.class,
-                GraphicsMenuFrame.class,
-                MemoryMenuFrame.class,
-                DisksMenuFrame.class,
-                NetworkMenuFrame.class,
-                USBDevicesMenuFrame.class,
-                PCIDevicesMenuFrame.class
-        };
+		Class<? extends AbstractSystemInfoFrame>[] frameClasses = new Class[] {
+				CPUMenuFrame.class,
+				GraphicsMenuFrame.class,
+				MemoryMenuFrame.class,
+				DisksMenuFrame.class,
+				NetworkMenuFrame.class,
+				USBDevicesMenuFrame.class,
+				PCIDevicesMenuFrame.class
+		};
 
-        int buttonDownShift = 220; // Y-Position of Top Button
-        for (JButton button : selectMenuButtons) {
-            button.setBounds(480, buttonDownShift, 200, 50);
-            buttonDownShift += 50; // Moves down Y-Position for Next Button
-            add(button);
-        }
+		int buttonDownShift = 220; // Y-Position of Top Button
+		for (JButton button : selectMenuButtons) {
+			button.setBounds(480, buttonDownShift, 200, 50);
+			buttonDownShift += 50; // Moves down Y-Position for Next Button
+			add(button);
+		}
 
-        // Add action to the button
-        selectMenuButtons[0].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new CPUMenuFrame();
-                dispose();
-            }
-        });
+		// Add action to the button
+		selectMenuButtons[0].addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new CPUMenuFrame();
+				dispose();
+			}
+		});
 
-        // OS Logo
-        ImageIcon icon = new ImageIcon("assets/iconWindows11.png");
-        JLabel osLogo = new JLabel(icon);
-        osLogo.setBounds(550, 80, 50, 50);
-        add(osLogo);
+		// OS Logo
+		ImageIcon icon = new ImageIcon("assets/iconWindows11.png");
+		JLabel osLogo = new JLabel(icon);
+		osLogo.setBounds(550, 80, 50, 50);
+		add(osLogo);
 
-        // Make Frame Visible
-        setVisible(true);
-    }
-
+		// Make Frame Visible
+		setVisible(true);
+	}
 
 }
 
 class CPUMenuFrame extends AbstractSystemInfoFrame {
-    public CPUMenuFrame() {
-        super();
-        ProcessorSpecs specs = new ProcessorSpecs();
-        OshiMethod oshi = new OshiMethod();
-        LogicalCPU threadCpu = new LogicalCPU();
-        PhysicalCPU physicalCpu = new PhysicalCPU();
-        SysMemory memory = new SysMemory();
-        setTitle("System Info - CPU");
-        JLabel nameText = new JLabel(String.format("CPU: %s", ProcessorSpecs.name()));
-        nameText.setBounds(480, 30, 500, 50);
-        nameText.setForeground(textColor);
-        JLabel familyText = new JLabel(String.format("Processor Family: %s", ProcessorSpecs.family()));
-        familyText.setBounds(480, 80, 500, 50);
-        familyText.setForeground(textColor);
-        JLabel modelText = new JLabel(String.format("Model: %s", ProcessorSpecs.model()));
-        modelText.setBounds(480, 130, 500, 50);
-        modelText.setForeground(textColor);
-        JLabel IDText = new JLabel(String.format("ID: %s", ProcessorSpecs.id()));
-        IDText.setBounds(480, 180, 500, 50);
-        IDText.setForeground(textColor);
-        JLabel sixtyFourBitText = new JLabel(String.format("64 Bit: %s", ProcessorSpecs.is64Bit()));
-        sixtyFourBitText.setBounds(480, 230, 500, 50);
-        sixtyFourBitText.setForeground(textColor);
-        JLabel microarchitecture = new JLabel(String.format("Microarchitecture: %s", ProcessorSpecs.microarchitecture()));
-        microarchitecture.setBounds(480, 280, 500, 50);
-        microarchitecture.setForeground(textColor);
-        JLabel maxFrequency = new JLabel(String.format("Max Frequency: %s", CPUGeneric.getMaxFrequency()));
-        maxFrequency.setBounds(480, 330, 500, 50);
-        maxFrequency.setForeground(textColor);
+	public CPUMenuFrame() {
+		super();
+		ProcessorSpecs specs = new ProcessorSpecs();
+		OshiMethod oshi = new OshiMethod();
+		LogicalCPU threadCpu = new LogicalCPU();
+		PhysicalCPU physicalCpu = new PhysicalCPU();
+		SysMemory memory = new SysMemory();
+		setTitle("System Info - CPU");
+		JLabel nameText = new JLabel(String.format("CPU: %s", ProcessorSpecs.name()));
+		nameText.setBounds(480, 30, 500, 50);
+		nameText.setForeground(textColor);
+		JLabel familyText = new JLabel(String.format("Processor Family: %s", ProcessorSpecs.family()));
+		familyText.setBounds(480, 80, 500, 50);
+		familyText.setForeground(textColor);
+		JLabel modelText = new JLabel(String.format("Model: %s", ProcessorSpecs.model()));
+		modelText.setBounds(480, 130, 500, 50);
+		modelText.setForeground(textColor);
+		JLabel IDText = new JLabel(String.format("ID: %s", ProcessorSpecs.id()));
+		IDText.setBounds(480, 180, 500, 50);
+		IDText.setForeground(textColor);
+		JLabel sixtyFourBitText = new JLabel(String.format("64 Bit: %s", ProcessorSpecs.is64Bit()));
+		sixtyFourBitText.setBounds(480, 230, 500, 50);
+		sixtyFourBitText.setForeground(textColor);
+		JLabel microarchitecture = new JLabel(
+				String.format("Microarchitecture: %s", ProcessorSpecs.microarchitecture()));
+		microarchitecture.setBounds(480, 280, 500, 50);
+		microarchitecture.setForeground(textColor);
+		JLabel maxFrequency = new JLabel(String.format("Max Frequency: %s", CPUGeneric.getMaxFrequency()));
+		maxFrequency.setBounds(480, 330, 500, 50);
+		maxFrequency.setForeground(textColor);
 
+		// Button to open a simple CPU-usage graph window
+		JButton showGraphButton = new JButton("Show CPU Graph");
+		showGraphButton.setBounds(700, 330, 150, 40);
+		add(showGraphButton);
 
+		// Local panel class that renders a simple live-updating line graph
+		class CPUUsageGraphPanel extends JPanel {
+			private final float[] samples = new float[200];
+			private final Timer timer;
 
-        add(nameText);
-        add(familyText);
-        add(modelText);
-        add(IDText);
-        add(sixtyFourBitText);
-        add(microarchitecture);
-        add(maxFrequency);
+			CPUUsageGraphPanel() {
+				setPreferredSize(new Dimension(800, 400));
+				setBackground(Color.BLACK);
 
-        setVisible(true);
-    }
+				// initialize samples
+				for (int i = 0; i < samples.length; i++)
+					samples[i] = 0f;
+
+				// update samples periodically (simulated data)
+				timer = new Timer(1000, e -> {
+					System.arraycopy(samples, 1, samples, 0, samples.length - 1);
+					// replace this with real CPU data when available
+					samples[samples.length - 1] = (float) CPUUsage.getCPU() / 100f;
+					repaint();
+				});
+				timer.start();
+			}
+
+			protected void paintComponent(java.awt.Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+				int w = getWidth();
+				int h = getHeight();
+
+				// background
+				g2.setColor(Color.DARK_GRAY);
+				g2.fillRect(0, 0, w, h);
+
+				// grid
+				g2.setColor(new Color(80, 80, 80));
+				for (int y = 0; y <= 4; y++) {
+					int yy = y * h / 4;
+					g2.drawLine(0, yy, w, yy);
+				}
+
+				// draw line
+				g2.setColor(Color.GREEN);
+				int len = samples.length;
+				int prevX = 0;
+				int prevY = h - Math.round(samples[0] * h);
+				for (int i = 1; i < len; i++) {
+					int x = i * w / (len - 1);
+					int y = h - Math.round(samples[i] * h);
+					g2.drawLine(prevX, prevY, x, y);
+					prevX = x;
+					prevY = y;
+				}
+
+				// label
+				g2.setColor(Color.WHITE);
+				g2.drawString("Simulated CPU Usage (%)", 8, 18);
+			}
+
+			public void removeNotify() {
+				timer.stop();
+				super.removeNotify();
+			}
+		}
+
+		showGraphButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame graphFrame = new JFrame("CPU Usage Graph");
+				graphFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				CPUUsageGraphPanel panel = new CPUUsageGraphPanel();
+				graphFrame.getContentPane().add(panel);
+				graphFrame.pack();
+				graphFrame.setLocationRelativeTo(null);
+				graphFrame.setVisible(true);
+			}
+		});
+		add(nameText);
+		add(familyText);
+		add(modelText);
+		add(IDText);
+		add(sixtyFourBitText);
+		add(microarchitecture);
+		add(maxFrequency);
+
+		setVisible(true);
+	}
 }
 
 class GraphicsMenuFrame extends AbstractSystemInfoFrame {
-    public GraphicsMenuFrame() {
-        super();
-        setTitle("System Info - Graphics");
-    }
+	public GraphicsMenuFrame() {
+		super();
+		setTitle("System Info - Graphics");
+		JButton showGraphButton = new JButton("Show CPU Graph");
+		showGraphButton.setBounds(700, 330, 150, 40);
+		add(showGraphButton);
+		class CPUUsageGraphPanel extends JPanel {
+			private final float[] samples = new float[200];
+			private final Timer timer;
+
+			CPUUsageGraphPanel() {
+				setPreferredSize(new Dimension(800, 400));
+				setBackground(Color.BLACK);
+
+				// initialize samples
+				for (int i = 0; i < samples.length; i++)
+					samples[i] = 0f;
+
+				// update samples periodically (simulated data)
+				timer = new Timer(1000, e -> {
+					System.arraycopy(samples, 1, samples, 0, samples.length - 1);
+					// replace this with real CPU data when available
+					samples[samples.length - 1] = (float) CPUUsage.getCPU() / 100f;
+					repaint();
+				});
+				timer.start();
+			}
+
+			protected void paintComponent(java.awt.Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+				int w = getWidth();
+				int h = getHeight();
+
+				// background
+				g2.setColor(Color.DARK_GRAY);
+				g2.fillRect(0, 0, w, h);
+
+				// grid
+				g2.setColor(new Color(80, 80, 80));
+				for (int y = 0; y <= 4; y++) {
+					int yy = y * h / 4;
+					g2.drawLine(0, yy, w, yy);
+				}
+
+				// draw line
+				g2.setColor(Color.GREEN);
+				int len = samples.length;
+				int prevX = 0;
+				int prevY = h - Math.round(samples[0] * h);
+				for (int i = 1; i < len; i++) {
+					int x = i * w / (len - 1);
+					int y = h - Math.round(samples[i] * h);
+					g2.drawLine(prevX, prevY, x, y);
+					prevX = x;
+					prevY = y;
+				}
+
+				// label
+				g2.setColor(Color.WHITE);
+				g2.drawString("Simulated CPU Usage (%)", 8, 18);
+			}
+
+			public void removeNotify() {
+				timer.stop();
+				super.removeNotify();
+			}
+		}
+
+		showGraphButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame graphFrame = new JFrame("CPU Usage Graph");
+				graphFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				CPUUsageGraphPanel panel = new CPUUsageGraphPanel();
+				graphFrame.getContentPane().add(panel);
+				graphFrame.pack();
+				graphFrame.setLocationRelativeTo(null);
+				graphFrame.setVisible(true);
+			}
+		});
+	}
 }
 
 class MemoryMenuFrame extends AbstractSystemInfoFrame {
-    public MemoryMenuFrame() {
-        super();
-        setTitle("System Info - Memory");
-    }
+	public MemoryMenuFrame() {
+		super();
+		setTitle("System Info - Memory");
+	}
 }
 
 class DisksMenuFrame extends AbstractSystemInfoFrame {
-    public DisksMenuFrame() {
-        super();
-        setTitle("System Info - Disks");
-    }
+	public DisksMenuFrame() {
+		super();
+		setTitle("System Info - Disks");
+	}
 }
 
 class NetworkMenuFrame extends AbstractSystemInfoFrame {
-    public NetworkMenuFrame() {
-        super();
-        setTitle("System Info - Network");
-    }
+	public NetworkMenuFrame() {
+		super();
+		setTitle("System Info - Network");
+	}
 }
 
 class USBDevicesMenuFrame extends AbstractSystemInfoFrame {
-    public USBDevicesMenuFrame() {
-        super();
-        setTitle("System Info - USB Devices");
-    }
+	public USBDevicesMenuFrame() {
+		super();
+		setTitle("System Info - USB Devices");
+	}
 }
 
 class PCIDevicesMenuFrame extends AbstractSystemInfoFrame {
-    public PCIDevicesMenuFrame() {
-        super();
-        setTitle("System Info - PCI Devices");
-    }
+	public PCIDevicesMenuFrame() {
+		super();
+		setTitle("System Info - PCI Devices");
+	}
 }
