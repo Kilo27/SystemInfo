@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class test {
     public static void main(String[] args) {
         ProcessorSpecs specs = new ProcessorSpecs();
@@ -12,5 +14,9 @@ public class test {
         memory.testData();
         oshi.printSysUtil();
         network.testData();
+        List<USB.USBInfo>  usbList=USB.getAllUsbInfo();
+        System.out.println(usbList);
+        System.out.println(usbList.getFirst().name);
+
     }
 }

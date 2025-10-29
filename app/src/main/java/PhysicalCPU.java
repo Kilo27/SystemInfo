@@ -17,7 +17,7 @@ public class PhysicalCPU extends CPUGeneric {
     public void testData(){
         System.out.printf("%-25s | %s\n","Processor ID: " , getIdString(0));
         System.out.printf("%-25s | %s\n","Processor Package Number: " , getPackageNumber(0));
-        System.out.printf("%-25s | %s\n","Processor Core ID:" , physicalProcessorCount());
+        System.out.printf("%-25s | %s\n","Processor Count:" , physicalProcessorCount());
         System.out.printf("%-25s | %s\n", "Processor Efficiency: " , processorEfficiency(0));
         /*
         System.out.println(physicalProcessorCount());

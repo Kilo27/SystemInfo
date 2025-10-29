@@ -6,8 +6,10 @@
 import javax.swing.*;
 import javax.swing.JComponent;
 import java.awt.*;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class App {
 	public static void main(String[] args) {
@@ -86,6 +88,14 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
                 dispose();
             }
         });
+        selectMenuButtons[5].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new USBDevicesMenuFrame();
+                dispose();
+            }
+        });
+
 
         // OS
         OSInfo osInfo = new OSInfo();
@@ -106,20 +116,20 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
         osFileSystemLabel.setForeground(textColor);
         osFileSystemLabel.setBounds(400,130,380,20);
 
-        JLabel osCurrentProcessLabel = new JLabel(String.format("Current Process: %s", osInfo.currentProcess()));
-        osCurrentProcessLabel.setForeground(textColor);
-        osCurrentProcessLabel.setBounds(400,150,380,20);
+        //JLabel osCurrentProcessLabel = new JLabel(String.format("Current Process: %s", osInfo.currentProcess()));
+        //osCurrentProcessLabel.setForeground(textColor);
+        //osCurrentProcessLabel.setBounds(400,150,380,20);
 
-        JLabel osCurrentThreadLabel = new JLabel(String.format("Current Thread: %s", osInfo.currentThread()));
-        osCurrentThreadLabel.setForeground(textColor);
-        osCurrentThreadLabel.setBounds(400,170,380,20);
+        //JLabel osCurrentThreadLabel = new JLabel(String.format("Current Thread: %s", osInfo.currentThread()));
+        //osCurrentThreadLabel.setForeground(textColor);
+        //osCurrentThreadLabel.setBounds(400,170,380,20);
 
         add(osNameLabel);
         add(osManufacturerLabel);
         add(osVersionLabel);
         add(osFileSystemLabel);
-        add(osCurrentProcessLabel);
-        add(osCurrentThreadLabel);
+        //add(osCurrentProcessLabel);
+        //add(osCurrentThreadLabel);
 
 		// Make Frame Visible
 		setVisible(true);
@@ -203,7 +213,7 @@ class CPUMenuFrame extends AbstractSystemInfoFrame {
 				timer.start();
 			}
 
-			protected void paintComponent(java.awt.Graphics g) {
+			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				Graphics2D g2 = (Graphics2D) g;
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -276,7 +286,7 @@ class GraphicsMenuFrame extends AbstractSystemInfoFrame {
 		super();
 		setTitle("System Info - Graphics");
 
-        Graphics graphics = new  Graphics();
+        LocalGraphics graphics = new LocalGraphics();
 
         // Main Menu Button
         JButton mainMenuButton = new  JButton("Main Menu");
@@ -391,7 +401,7 @@ class MemoryMenuFrame extends AbstractSystemInfoFrame {
                 timer.start();
             }
 
-            protected void paintComponent(java.awt.Graphics g) {
+            protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -535,7 +545,7 @@ class DisksMenuFrame extends AbstractSystemInfoFrame {
                 timer.start();
             }
 
-            protected void paintComponent(java.awt.Graphics g) {
+            protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -644,11 +654,28 @@ class NetworkMenuFrame extends AbstractSystemInfoFrame {
 class USBDevicesMenuFrame extends AbstractSystemInfoFrame {
 	public USBDevicesMenuFrame() {
 		super();
+        USB usb = new USB();
 		setTitle("System Info - USB Devices");
-
         // Main Menu Button
         JButton mainMenuButton = new  JButton("Main Menu");
         mainMenuButton.setBounds(0, 0, 150, 50);
+        List<USB.USBInfo> usbList = USB.getAllUsbInfo();
+        int sizeof=usbList.size();
+        String[] choices = new String[sizeof];
+        for (int i=0;i<sizeof;i++){
+            choices[i]=usbList.get(i).name;
+        }
+
+        //List<String> choices = new java.util.ArrayList<>(List.of());
+        //for(int j=0;j<sizeof;j++){
+        //    choices.add(String.valueOf(j));
+        //}
+
+        final JComboBox<String> cb = new JComboBox<String>(choices);
+        cb.setSelectedIndex(0);
+        cb.setBounds(480, 0, 100, 30);
+        add(cb);
+
 
         mainMenuButton.addActionListener(new ActionListener() {
             @Override
@@ -657,7 +684,7 @@ class USBDevicesMenuFrame extends AbstractSystemInfoFrame {
                 dispose();
             }
         });
-
+        setVisible(true);
         add(mainMenuButton);
 	}
 }
