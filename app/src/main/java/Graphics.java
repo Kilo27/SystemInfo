@@ -16,22 +16,37 @@ public class Graphics {
         hal = systeminfo.getHardware();
         gpus = hal.getGraphicsCards();
     }
-
+    /* Returns "N/A" if the string is null or empty */
+    public String stringCheck(String value) {
+        return (value == null || value.isEmpty() ? "N/A" : value);
+    }
+    //Returns the name of the gpu at index i.
     public String graphicsName(int i) {
-        return  gpus.get(i).getName();
+        String name = gpus.get(i).getName();
+        return stringCheck(name);
     }
+    //Returns the device ID for the gpu at index i.
     public String graphicsDeviceId(int i) {
-        return gpus.get(i).getDeviceId();
+        String id = gpus.get(i).getDeviceId();
+        return stringCheck(id);
     }
+    //Returns the vendor
     public String graphicsVendor(int i) {
-        return gpus.get(i).getVendor();
+        String vendor = gpus.get(i).getVendor();
+        return stringCheck(vendor);
     }
+    //Returns the vram bytes for gpu at index i
     public String vramBytes(int i) {
-        return FormatUtil.formatBytes(gpus.get(i).getVRam());
+        long vram = gpus.get(i).getVRam();
+        return (vram <= 0) ? "N/A" : FormatUtil.formatBytes(vram);
+        
     }
+    //Returns version info for gpu at index i
     public String graphicsVersionInfo(int i) {
-        return gpus.get(i).getVersionInfo();
+        String gpuVersionInfo = gpus.get(i).getVersionInfo();
+        return stringCheck(gpuVersionInfo);
     }
+    //Returns gpu count
     public int gpuCount() {
         return gpus.size();
     }
