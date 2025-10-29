@@ -1,32 +1,52 @@
-import oshi.hardware.UsbDevice;
 
+import oshi.hardware.UsbDevice;
+import java.util.ArrayList;
 import java.util.List;
 
 public class USB extends OshiMethod {
+
     public List<UsbDevice> getParentLevelUsbDevices() {
         return hardware.getUsbDevices(false);
     }
+
     public List<UsbDevice> getChildLevelUsbDevices(UsbDevice parent) {
         return parent.getConnectedDevices();
     }
-     /*
-     * Recursively prints all child USB devices of the given parent device.
-     * 
-     * If a parent has no children, a message is printed. Otherwise,
-     * each child’s name and product ID are displayed, and the method
-     * is called again for that child — allowing full tree traversal.
-     */
-    public void checkChildLevelUsbDevices(UsbDevice parent) {
-        List<UsbDevice> children = getChildLevelUsbDevices(parent);
-        if(children.isEmpty()) {
-            System.out.println("Parent " + parent.getName() + " has no children");
+
+    // A helper data model for GUI display
+    public static class UsbInfo {
+        public String name;
+        public String vendor;
+        public String vendorId;
+        public String productId;
+        public String serialNumber;
+        public boolean connected;
+        public String uniqueId;
+        public List<UsbInfo> children = new ArrayList<>();
+    }
+
+    // Build a tree of UsbInfo objects
+    public UsbInfo buildUsbInfoTree(UsbDevice device) {
+        UsbInfo info = new UsbInfo();
+        info.name = device.getName();
+        info.vendor = device.getVendor();
+        info.vendorId = device.getVendorId();
+        info.productId = device.getProductId();
+        info.serialNumber = device.getSerialNumber();
+        info.connected = device.isConnected();
+        info.uniqueId = device.getUniqueDeviceId();
+
+        for (UsbDevice child : device.getConnectedDevices()) {
+            info.children.add(buildUsbInfoTree(child));
         }
-        else{
-            for(UsbDevice child : children) {
-                System.out.println("Child: " + child.getName() + " Product ID: " + child.getProductId());
-                checkChildLevelUsbDevices(child);
-                /* Recursive call — traverses grandchildren, great-grandchildren, etc.*/
-            }
+        return info;
+    }
+
+    public List<UsbInfo> getAllUsbInfo() {
+        List<UsbInfo> list = new ArrayList<>();
+        for (UsbDevice parent : getParentLevelUsbDevices()) {
+            list.add(buildUsbInfoTree(parent));
         }
+        return list;
     }
 }
