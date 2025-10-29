@@ -310,6 +310,30 @@ class MemoryMenuFrame extends AbstractSystemInfoFrame {
 
         add(mainMenuButton);
 
+        JLabel totalMemoryLabel = new JLabel(String.format("Total Memory: %s", memory.formatBytes(memory.totalMemory())));
+        totalMemoryLabel.setBounds(480, 30, 500, 50);
+        totalMemoryLabel.setForeground(textColor);
+
+        JLabel availableMemoryLabel = new JLabel(String.format("Available Memory: %s", memory.formatBytes(memory.availableMemory())));
+        availableMemoryLabel.setBounds(480, 80, 500, 50);
+        availableMemoryLabel.setForeground(textColor);
+
+        JLabel usedMemoryLabel = new JLabel(String.format("Used Memory: %s", memory.formatBytes(memory.usedMemory())));
+        usedMemoryLabel.setBounds(480, 130, 500, 50);
+        usedMemoryLabel.setForeground(textColor);
+
+            JLabel virtualMemoryLabel = new JLabel(String.format("Virtual Memory: %s", memory.formatBytes(memory.virtualMemory())));
+        virtualMemoryLabel.setBounds(480, 180, 500, 50);
+        virtualMemoryLabel.setForeground(textColor);
+
+        JLabel pageSizeLabel = new JLabel(String.format("Page Size: %s", memory.formatBytes(memory.pageSize())));
+        pageSizeLabel.setBounds(480, 230, 500, 50);
+        pageSizeLabel.setForeground(textColor);
+
+        JLabel availableVirtualMemoryLabel = new JLabel(String.format("Available Virtual Memory: %s", memory.formatBytes(memory.availableVirtualMemory())));
+        availableVirtualMemoryLabel.setBounds(480, 280, 500, 50);
+        availableVirtualMemoryLabel.setForeground(textColor);
+
         // Button to open a simple CPU-usage graph window
         JButton showGraphButton = new JButton("Show Memory Graph");
         showGraphButton.setBounds(700, 330, 150, 40);
@@ -393,6 +417,14 @@ class MemoryMenuFrame extends AbstractSystemInfoFrame {
                 graphFrame.setVisible(true);
             }
         });
+
+        add(totalMemoryLabel);
+        add(availableMemoryLabel);
+        add(usedMemoryLabel);
+        add(virtualMemoryLabel);
+        add(pageSizeLabel);
+        add(availableVirtualMemoryLabel);
+
         setVisible(true);
 	}
 }
