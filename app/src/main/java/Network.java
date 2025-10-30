@@ -73,4 +73,74 @@ class NetInterface {
         this.outErrors = IF.getOutErrors();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getMacaddr() {
+        return macaddr;
+    }
+
+    public String[] getIPv4addrList() {
+        return ipv4addrList;
+    }
+
+    public String[] getIPv6addrList() {
+        return ipv6addrList;
+    }
+
+    public Short[] getSubnetMasks() {
+        return subnetMasks;
+    }
+
+    public NetworkIF.IfOperStatus getIfOperStatus() {
+        return operStatus;
+    }
+
+    public boolean isConnectorPresent() {
+        return connectorPresent;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public long getSpeed() {
+        return speed;
+    }
+
+    public long getBytesSent() {
+        return bytesSent;
+    }
+
+    public long getBytesReceived() {
+        return bytesReceived;
+    }
+
+    public long getPacketsSent() {
+        return packetsSent;
+    }
+
+    public long getPacketsReceived() {
+        return packetsReceived;
+    }
+
+    public long getPacketDrops() {
+        return packetDrops;
+    }
+
+    public long getPacketCollisions() {
+        return packetCollisions;
+    }
+
+    public long getOutErrors() {
+        return outErrors;
+    }
+
+
+
 }
