@@ -3,11 +3,19 @@
  */
 
 
+import oshi.hardware.NetworkIF;
+
 import javax.swing.*;
 import javax.swing.JComponent;
 import java.awt.*;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.net.NetworkInterface;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class App {
 	public static void main(String[] args) {
@@ -47,7 +55,6 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
 				new JButton("Disks"),
 				new JButton("Network"),
 				new JButton("USB Devices"),
-				new JButton("PCI Devices")
 		};
 
 
@@ -66,6 +73,13 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
 				dispose();
 			}
 		});
+        selectMenuButtons[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GraphicsMenuFrame();
+                dispose();
+            }
+        });
         selectMenuButtons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,6 +94,21 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
                 dispose();
             }
         });
+        selectMenuButtons[4].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new NetworkMenuFrame();
+                dispose();
+            }
+        });
+        selectMenuButtons[5].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new USBDevicesMenuFrame();
+                dispose();
+            }
+        });
+
 
         // OS
         OSInfo osInfo = new OSInfo();
@@ -100,20 +129,20 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
         osFileSystemLabel.setForeground(textColor);
         osFileSystemLabel.setBounds(400,130,380,20);
 
-        JLabel osCurrentProcessLabel = new JLabel(String.format("Current Process: %s", osInfo.currentProcess()));
-        osCurrentProcessLabel.setForeground(textColor);
-        osCurrentProcessLabel.setBounds(400,150,380,20);
+        //JLabel osCurrentProcessLabel = new JLabel(String.format("Current Process: %s", osInfo.currentProcess()));
+        //osCurrentProcessLabel.setForeground(textColor);
+        //osCurrentProcessLabel.setBounds(400,150,380,20);
 
-        JLabel osCurrentThreadLabel = new JLabel(String.format("Current Thread: %s", osInfo.currentThread()));
-        osCurrentThreadLabel.setForeground(textColor);
-        osCurrentThreadLabel.setBounds(400,170,380,20);
+        //JLabel osCurrentThreadLabel = new JLabel(String.format("Current Thread: %s", osInfo.currentThread()));
+        //osCurrentThreadLabel.setForeground(textColor);
+        //osCurrentThreadLabel.setBounds(400,170,380,20);
 
         add(osNameLabel);
         add(osManufacturerLabel);
         add(osVersionLabel);
         add(osFileSystemLabel);
-        add(osCurrentProcessLabel);
-        add(osCurrentThreadLabel);
+        //add(osCurrentProcessLabel);
+        //add(osCurrentThreadLabel);
 
 		// Make Frame Visible
 		setVisible(true);
@@ -197,7 +226,7 @@ class CPUMenuFrame extends AbstractSystemInfoFrame {
 				timer.start();
 			}
 
-			protected void paintComponent(java.awt.Graphics g) {
+			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				Graphics2D g2 = (Graphics2D) g;
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -270,6 +299,8 @@ class GraphicsMenuFrame extends AbstractSystemInfoFrame {
 		super();
 		setTitle("System Info - Graphics");
 
+        LocalGraphics graphics = new LocalGraphics();
+
         // Main Menu Button
         JButton mainMenuButton = new  JButton("Main Menu");
         mainMenuButton.setBounds(0, 0, 150, 50);
@@ -283,6 +314,27 @@ class GraphicsMenuFrame extends AbstractSystemInfoFrame {
         });
 
         add(mainMenuButton);
+
+        // Labels
+        JLabel[] graphicsLabels = {
+                new JLabel(String.format("GPU Name: %s", graphics.graphicsName(0))),
+                new JLabel(String.format("GPU Device ID: %s", graphics.graphicsDeviceId(0))),
+                new JLabel(String.format("GPU Vendor: %s", graphics.graphicsVendor(0))),
+                new JLabel(String.format("VRAM: %s", graphics.vramBytes(0))),
+                new JLabel(String.format("GPU Version Information: %s", graphics.graphicsVersionInfo(0))),
+                new JLabel(String.format("GPU Count: %d", graphics.gpuCount()))
+        };
+
+
+        int labelDownShift = 30; // Y-Position of Top Button
+        for (JLabel iLabel : graphicsLabels) {
+            iLabel.setBounds(480, labelDownShift, 300, 50);
+            iLabel.setForeground(textColor);
+            labelDownShift += 50; // Moves down Y-Position for Next Button
+            add(iLabel);
+        }
+
+        setVisible(true);
 
 	}
 }
@@ -362,7 +414,7 @@ class MemoryMenuFrame extends AbstractSystemInfoFrame {
                 timer.start();
             }
 
-            protected void paintComponent(java.awt.Graphics g) {
+            protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -449,6 +501,29 @@ class DisksMenuFrame extends AbstractSystemInfoFrame {
 
         add(mainMenuButton);
 
+        // Labels
+        JLabel[] diskLabels = {
+                new JLabel(String.format("Disk Size: %s", disk.size(0))),
+                new JLabel(String.format("Disk Model: %s", disk.diskModel(0))),
+                new JLabel(String.format("Disk Name: %s", disk.diskName(0))),
+                new JLabel(String.format("Current Queue: %s", disk.currentQueue(0))),
+                new JLabel(String.format("Transfer Time: %s", disk.transferTime(0))),
+                new JLabel(String.format("Read Bytes: %s", disk.readBytes(0))),
+                new JLabel(String.format("Write Bytes: %s", disk.writeBytes(0))),
+                new JLabel(String.format("Total Reads: %s", disk.reads(0))),
+                new JLabel(String.format("Total Writes: %s", disk.writes(0))),
+
+        };
+
+
+        int labelDownShift = 30; // Y-Position of Top Button
+        for (JLabel iLabel : diskLabels) {
+            iLabel.setBounds(480, labelDownShift, 300, 50);
+            iLabel.setForeground(textColor);
+            labelDownShift += 50; // Moves down Y-Position for Next Button
+            add(iLabel);
+        }
+
         // Button to open a simple CPU-usage graph window
         JButton showGraphButton = new JButton("Show Disk Usage Graph");
         showGraphButton.setBounds(700, 330, 150, 40);
@@ -483,7 +558,7 @@ class DisksMenuFrame extends AbstractSystemInfoFrame {
                 timer.start();
             }
 
-            protected void paintComponent(java.awt.Graphics g) {
+            protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -561,6 +636,9 @@ class DisksMenuFrame extends AbstractSystemInfoFrame {
                 graphFrame.setVisible(true);
             }
         });
+
+
+
         setVisible(true);
 	}
 }
@@ -570,6 +648,10 @@ class NetworkMenuFrame extends AbstractSystemInfoFrame {
 		super();
 		setTitle("System Info - Network");
 
+        Network network = new Network();
+
+        ArrayList networkArray = network.doTheShit();
+
         // Main Menu Button
         JButton mainMenuButton = new  JButton("Main Menu");
         mainMenuButton.setBounds(0, 0, 150, 50);
@@ -583,17 +665,151 @@ class NetworkMenuFrame extends AbstractSystemInfoFrame {
         });
 
         add(mainMenuButton);
+
+        // Labels
+        JLabel[] networkLabels = {
+                new JLabel(String.format("Network Name: %s", networkArray.getFirst())),
+                new JLabel(String.format("Display Name: %s", 2)),
+                new JLabel(String.format("Mac Address: %s", 3)),
+                new JLabel(String.format("IPV4 Address List: %s", 4)),
+                new JLabel(String.format("IPV6 Address List: %s", 5)),
+                new JLabel(String.format("Subnet Mask: %s", 6)),
+                new JLabel(String.format("Connector Present: %s", true)),
+                new JLabel(String.format("Time Stamp: %s", 7)),
+                new JLabel(String.format("Speed: %s", 8)),
+                new JLabel(String.format("Bytes Sent: %s", 9)),
+                new JLabel(String.format("Bytes Received: %s", 10)),
+                new JLabel(String.format("Packets Sent: %s", 11)),
+                new JLabel(String.format("Packets Received: %s", 12)),
+                new JLabel(String.format("Packets Drops: %s", 13)),
+                new JLabel(String.format("Packets Collisions: %s", 14)),
+                new JLabel(String.format("Out Errors: %s", 15)),
+        };
+
+
+        int labelDownShift = 30; // Y-Position of Top Button
+        for (JLabel iLabel : networkLabels) {
+            iLabel.setBounds(480, labelDownShift, 300, 50);
+            iLabel.setForeground(textColor);
+            labelDownShift += 20; // Moves down Y-Position for Next Button
+            add(iLabel);
+        }
+
+        setVisible(true);
 	}
 }
 
 class USBDevicesMenuFrame extends AbstractSystemInfoFrame {
 	public USBDevicesMenuFrame() {
 		super();
+        USB usb = new USB();
 		setTitle("System Info - USB Devices");
-
         // Main Menu Button
         JButton mainMenuButton = new  JButton("Main Menu");
         mainMenuButton.setBounds(0, 0, 150, 50);
+        List<USB.USBInfo> usbList = USB.getAllUsbInfo();
+        int sizeof=usbList.size();
+        String[] choices = new String[sizeof];
+        for (int i=0;i<sizeof;i++){
+            choices[i]=usbList.get(i).name;
+        }
+
+        //List<String> choices = new java.util.ArrayList<>(List.of());
+        //for(int j=0;j<sizeof;j++){
+        //    choices.add(String.valueOf(j));
+        //}
+
+        final JComboBox<String> cb = new JComboBox<String>(choices);
+        cb.setSelectedIndex(0);
+        cb.setBounds(480, 0, 200, 30);
+        add(cb);
+
+        // create and add labels once; update their text in the listener to avoid stacking
+        final JLabel vendorLabel = new JLabel();
+        vendorLabel.setBounds(480, 40, 700, 50);
+        vendorLabel.setForeground(textColor);
+        add(vendorLabel);
+
+        final JLabel vendorIDLabel = new JLabel();
+        vendorIDLabel.setBounds(480, 60, 700, 50);
+        vendorIDLabel.setForeground(textColor);
+        add(vendorIDLabel);
+
+        final JLabel productIDLabel = new JLabel();
+        productIDLabel.setBounds(480, 80, 700, 50);
+        productIDLabel.setForeground(textColor);
+        add(productIDLabel);
+
+        final JLabel serialNumberLabel = new JLabel();
+        serialNumberLabel.setBounds(480, 100, 700, 50);
+        serialNumberLabel.setForeground(textColor);
+        add(serialNumberLabel);
+
+        final JLabel uniqueIDLabel = new JLabel();
+        uniqueIDLabel.setBounds(480, 120, 700, 50);
+        uniqueIDLabel.setForeground(textColor);
+        add(uniqueIDLabel);
+
+        final JLabel childrenLabel = new JLabel();
+        childrenLabel.setBounds(480, 140, 700, 50);
+        childrenLabel.setForeground(textColor);
+        add(childrenLabel);
+
+        // initialize labels with the first item if available
+        if (sizeof > 0) {
+            int initialIndex = cb.getSelectedIndex();
+            USB.USBInfo info = usbList.get(initialIndex);
+            vendorLabel.setText(String.format("Vendor: %s", info.vendor));
+            vendorIDLabel.setText(String.format("Vendor ID: %s", info.vendorId));
+            productIDLabel.setText(String.format("Product ID: %s", info.productId));
+            serialNumberLabel.setText(String.format("Serial Number: %s", info.serialNumber));
+            uniqueIDLabel.setText(String.format("Unique ID: %s", info.uniqueId));
+            childrenLabel.setText(String.format("Children: %s", info.children));
+        }
+
+        cb.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int x = 0;
+                JComboBox<String> source = (JComboBox<String>) e.getSource();
+                String selectedItem = (String) source.getSelectedItem();
+                for (int index = 0; index < sizeof; index++) {
+                    if (Objects.equals(usbList.get(index).name, selectedItem)) {
+                        x = index;
+                        break;
+                    }
+                }
+                USB.USBInfo info = usbList.get(x);
+                // update existing labels instead of creating new ones
+                vendorLabel.setText(String.format("Vendor: %s", info.vendor));
+                vendorIDLabel.setText(String.format("Vendor ID: %s", info.vendorId));
+                productIDLabel.setText(String.format("Product ID: %s", info.productId));
+                serialNumberLabel.setText(String.format("Serial Number: %s", info.serialNumber));
+                uniqueIDLabel.setText(String.format("Unique ID: %s", info.uniqueId));
+                childrenLabel.setText(String.format("Children: %s", info.children));
+                // ensure UI refresh
+                vendorLabel.revalidate();
+                vendorLabel.repaint();
+                vendorIDLabel.revalidate();
+                vendorIDLabel.repaint();
+                productIDLabel.revalidate();
+                productIDLabel.repaint();
+                serialNumberLabel.revalidate();
+                serialNumberLabel.repaint();
+                uniqueIDLabel.revalidate();
+                uniqueIDLabel.repaint();
+                childrenLabel.revalidate();
+                childrenLabel.repaint();
+
+                System.out.println(info.name);
+                System.out.println(info.vendor);
+                System.out.println(info.vendorId);
+                System.out.println(info.productId);
+                System.out.println(info.serialNumber);
+                System.out.println(info.uniqueId);
+                System.out.println(info.children);
+            }
+        });
 
         mainMenuButton.addActionListener(new ActionListener() {
             @Override
@@ -602,28 +818,7 @@ class USBDevicesMenuFrame extends AbstractSystemInfoFrame {
                 dispose();
             }
         });
-
-        add(mainMenuButton);
-	}
-}
-
-class PCIDevicesMenuFrame extends AbstractSystemInfoFrame {
-	public PCIDevicesMenuFrame() {
-		super();
-		setTitle("System Info - PCI Devices");
-
-        // Main Menu Button
-        JButton mainMenuButton = new  JButton("Main Menu");
-        mainMenuButton.setBounds(0, 0, 150, 50);
-
-        mainMenuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new MainMenuFrame();
-                dispose();
-            }
-        });
-
+        setVisible(true);
         add(mainMenuButton);
 	}
 }

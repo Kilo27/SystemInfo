@@ -5,13 +5,13 @@ import oshi.util.FormatUtil;
 
 import java.util.List;
 
-public class Graphics {
+public class LocalGraphics {
 
     public SystemInfo systeminfo;
     public HardwareAbstractionLayer hal;
     public List<GraphicsCard> gpus;
 
-    public Graphics() {
+    public LocalGraphics() {
         systeminfo = new SystemInfo();
         hal = systeminfo.getHardware();
         gpus = hal.getGraphicsCards();

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class USB extends OshiMethod {
-
-    public List<UsbDevice> getParentLevelUsbDevices() {
+    USB(){
+        super();
+    }
+    public static List<UsbDevice> getParentLevelUsbDevices() {
         return hardware.getUsbDevices(false);
     }
 
@@ -14,7 +16,7 @@ public class USB extends OshiMethod {
     }
 
     // A helper data model for GUI display
-    public static class UsbInfo {
+    public static class USBInfo {
         public String name;
         public String vendor;
         public String vendorId;
@@ -22,18 +24,18 @@ public class USB extends OshiMethod {
         public String serialNumber;
         public boolean connected;
         public String uniqueId;
-        public List<UsbInfo> children = new ArrayList<>();
+        public List<USBInfo> children = new ArrayList<>();
     }
 
     // Build a tree of UsbInfo objects
-    public UsbInfo buildUsbInfoTree(UsbDevice device) {
-        UsbInfo info = new UsbInfo();
+    public static USBInfo buildUsbInfoTree(UsbDevice device) {
+        USBInfo info = new USBInfo();
         info.name = device.getName();
         info.vendor = device.getVendor();
         info.vendorId = device.getVendorId();
         info.productId = device.getProductId();
         info.serialNumber = device.getSerialNumber();
-        info.connected = device.isConnected();
+        //info.connected = device.isConnected();
         info.uniqueId = device.getUniqueDeviceId();
 
         for (UsbDevice child : device.getConnectedDevices()) {
@@ -42,8 +44,8 @@ public class USB extends OshiMethod {
         return info;
     }
 
-    public List<UsbInfo> getAllUsbInfo() {
-        List<UsbInfo> list = new ArrayList<>();
+    public static List<USBInfo> getAllUsbInfo() {
+        List<USBInfo> list = new ArrayList<>();
         for (UsbDevice parent : getParentLevelUsbDevices()) {
             list.add(buildUsbInfoTree(parent));
         }
