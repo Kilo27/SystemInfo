@@ -676,75 +676,92 @@ class USBDevicesMenuFrame extends AbstractSystemInfoFrame {
         cb.setSelectedIndex(0);
         cb.setBounds(480, 0, 200, 30);
         add(cb);
+
+        // create and add labels once; update their text in the listener to avoid stacking
+        final JLabel vendorLabel = new JLabel();
+        vendorLabel.setBounds(480, 40, 700, 50);
+        vendorLabel.setForeground(textColor);
+        add(vendorLabel);
+
+        final JLabel vendorIDLabel = new JLabel();
+        vendorIDLabel.setBounds(480, 60, 700, 50);
+        vendorIDLabel.setForeground(textColor);
+        add(vendorIDLabel);
+
+        final JLabel productIDLabel = new JLabel();
+        productIDLabel.setBounds(480, 80, 700, 50);
+        productIDLabel.setForeground(textColor);
+        add(productIDLabel);
+
+        final JLabel serialNumberLabel = new JLabel();
+        serialNumberLabel.setBounds(480, 100, 700, 50);
+        serialNumberLabel.setForeground(textColor);
+        add(serialNumberLabel);
+
+        final JLabel uniqueIDLabel = new JLabel();
+        uniqueIDLabel.setBounds(480, 120, 700, 50);
+        uniqueIDLabel.setForeground(textColor);
+        add(uniqueIDLabel);
+
+        final JLabel childrenLabel = new JLabel();
+        childrenLabel.setBounds(480, 140, 700, 50);
+        childrenLabel.setForeground(textColor);
+        add(childrenLabel);
+
+        // initialize labels with the first item if available
+        if (sizeof > 0) {
+            int initialIndex = cb.getSelectedIndex();
+            USB.USBInfo info = usbList.get(initialIndex);
+            vendorLabel.setText(String.format("Vendor: %s", info.vendor));
+            vendorIDLabel.setText(String.format("Vendor ID: %s", info.vendorId));
+            productIDLabel.setText(String.format("Product ID: %s", info.productId));
+            serialNumberLabel.setText(String.format("Serial Number: %s", info.serialNumber));
+            uniqueIDLabel.setText(String.format("Unique ID: %s", info.uniqueId));
+            childrenLabel.setText(String.format("Children: %s", info.children));
+        }
+
         cb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JLabel vendorLabel = new JLabel();
-                JLabel vendorIDLabel = new JLabel();
-                JLabel productIDLabel = new JLabel();
-                JLabel serialNumberLabel = new JLabel();
-                JLabel uniqueIDLabel = new JLabel();
-                JLabel childrenLabel = new JLabel();
                 int x = 0;
                 JComboBox<String> source = (JComboBox<String>) e.getSource();
                 String selectedItem = (String) source.getSelectedItem();
                 for (int index = 0; index < sizeof; index++) {
                     if (Objects.equals(usbList.get(index).name, selectedItem)) {
                         x = index;
+                        break;
                     }
                 }
-                //JLabel[] diskLabels = {
-                //        new JLabel(String.format("Vendor: %s", usbList.get(x).vendor)),
-                //        new JLabel(String.format("Vendor ID: %s", usbList.get(x).vendorId)),
-                //        new JLabel(String.format("Product ID: %s", usbList.get(x).productId)),
-                 //       new JLabel(String.format("Serial Number: %s", usbList.get(x).serialNumber)),
-                   //     new JLabel(String.format("Unique ID: %s", usbList.get(x).uniqueId)),
-                     //   new JLabel(String.format("children: %s", usbList.get(x).children)),
+                USB.USBInfo info = usbList.get(x);
+                // update existing labels instead of creating new ones
+                vendorLabel.setText(String.format("Vendor: %s", info.vendor));
+                vendorIDLabel.setText(String.format("Vendor ID: %s", info.vendorId));
+                productIDLabel.setText(String.format("Product ID: %s", info.productId));
+                serialNumberLabel.setText(String.format("Serial Number: %s", info.serialNumber));
+                uniqueIDLabel.setText(String.format("Unique ID: %s", info.uniqueId));
+                childrenLabel.setText(String.format("Children: %s", info.children));
+                // ensure UI refresh
+                vendorLabel.revalidate();
+                vendorLabel.repaint();
+                vendorIDLabel.revalidate();
+                vendorIDLabel.repaint();
+                productIDLabel.revalidate();
+                productIDLabel.repaint();
+                serialNumberLabel.revalidate();
+                serialNumberLabel.repaint();
+                uniqueIDLabel.revalidate();
+                uniqueIDLabel.repaint();
+                childrenLabel.revalidate();
+                childrenLabel.repaint();
 
-                //};
-                vendorLabel = new JLabel(String.format("Vendor: %s",usbList.get(x).vendor));
-                vendorLabel.setBounds(480, 40, 700, 50);
-                vendorLabel.setForeground(textColor);
-                add(vendorLabel);
-                 vendorIDLabel = new JLabel(String.format("Vendor ID: %s",usbList.get(x).vendorId));
-                vendorIDLabel.setBounds(480, 60, 700, 50);
-                vendorIDLabel.setForeground(textColor);
-                productIDLabel = new JLabel(String.format("Product ID: %s",usbList.get(x).productId));
-                productIDLabel.setBounds(480, 80, 700, 50);
-                productIDLabel.setForeground(textColor);
-                serialNumberLabel = new JLabel(String.format("Serial Number: %s",usbList.get(x).serialNumber));
-                serialNumberLabel.setBounds(480, 100, 700, 50);
-                serialNumberLabel.setForeground(textColor);
-                uniqueIDLabel = new JLabel(String.format("Unique ID: %s",usbList.get(x).uniqueId));
-                uniqueIDLabel.setBounds(480, 120, 700, 50);
-                uniqueIDLabel.setForeground(textColor);
-                childrenLabel = new JLabel(String.format("Children: %s",usbList.get(x).children));
-                childrenLabel.setBounds(480, 140, 700, 50);
-                childrenLabel.setForeground(textColor);
-                add(vendorLabel);
-                add(vendorIDLabel);
-                add(productIDLabel);
-                add(serialNumberLabel);
-                add(uniqueIDLabel);
-                add(childrenLabel);
-                System.out.println(usbList.get(x).name);
-                System.out.println(usbList.get(x).vendor);
-                System.out.println(usbList.get(x).vendorId);
-                System.out.println(usbList.get(x).productId);
-                System.out.println(usbList.get(x).serialNumber);
-                System.out.println(usbList.get(x).uniqueId);
-                System.out.println(usbList.get(x).children);
-                //int labelDownShift = 100; // Y-Position of Top Button
-                //for (JLabel iLabel : diskLabels) {
-                //    iLabel.setBounds(480, labelDownShift, 1200, 20);
-                //    iLabel.setForeground(textColor);
-                //    labelDownShift += 50; // Moves down Y-Position for Next Button
-                //    add(iLabel);
-                //
-                //}
-
+                System.out.println(info.name);
+                System.out.println(info.vendor);
+                System.out.println(info.vendorId);
+                System.out.println(info.productId);
+                System.out.println(info.serialNumber);
+                System.out.println(info.uniqueId);
+                System.out.println(info.children);
             }
-
         });
 
         mainMenuButton.addActionListener(new ActionListener() {
