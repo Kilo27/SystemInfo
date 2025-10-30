@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Network extends OshiMethod {
 
-    public ArrayList<NetInterface> doTheShit() {
+    public static ArrayList<NetInterface> doTheShit() {
 
         // get list of net interfaces from hardware
         List<NetworkIF> iFList = hardware.getNetworkIFs();
@@ -35,23 +35,23 @@ public class Network extends OshiMethod {
 
 class NetInterface {
 
-    protected String name;
-    protected String displayName;
-    protected String macaddr;
-    protected String[] ipv4addrList;
-    protected String[] ipv6addrList;
-    protected Short[] subnetMasks;
-    protected NetworkIF.IfOperStatus operStatus;
-    protected boolean connectorPresent;
-    protected long timeStamp;
-    protected long speed;
-    protected long bytesSent;
-    protected long bytesReceived;
-    protected long packetsSent;
-    protected long packetsReceived;
-    protected long packetDrops;
-    protected long packetCollisions;
-    protected long outErrors;
+    public String name;
+    public String displayName;
+    public String macaddr;
+    public String[] ipv4addrList;
+    public String[] ipv6addrList;
+    public Short[] subnetMasks;
+    public NetworkIF.IfOperStatus operStatus;
+    public boolean connectorPresent;
+    public long timeStamp;
+    public long speed;
+    public long bytesSent;
+    public long bytesReceived;
+    public long packetsSent;
+    public long packetsReceived;
+    public long packetDrops;
+    public long packetCollisions;
+    public long outErrors;
 
     public NetInterface(NetworkIF IF) {
         this.name = IF.getName();
