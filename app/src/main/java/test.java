@@ -18,6 +18,8 @@ public class test {
         List<USB.USBInfo>  usbList=USB.getAllUsbInfo();
         System.out.println(usbList);
         System.out.println(usbList.getFirst().name);
+        ArrayList<NetInterface> netList = Network.doTheShit();
+        System.out.println(netList.get(0).name);
 
 
     }

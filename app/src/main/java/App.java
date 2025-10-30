@@ -3,6 +3,7 @@
  */
 
 
+import com.sun.jna.platform.win32.Wininet;
 import oshi.hardware.NetworkIF;
 
 import javax.swing.*;
@@ -650,7 +651,7 @@ class NetworkMenuFrame extends AbstractSystemInfoFrame {
 
         Network network = new Network();
 
-        ArrayList networkArray = network.doTheShit();
+        ArrayList<NetInterface> networkArray = network.doTheShit();
 
         // Main Menu Button
         JButton mainMenuButton = new  JButton("Main Menu");
@@ -668,28 +669,28 @@ class NetworkMenuFrame extends AbstractSystemInfoFrame {
 
         // Labels
         JLabel[] networkLabels = {
-                new JLabel(String.format("Network Name: %s", networkArray.getFirst())),
-                new JLabel(String.format("Display Name: %s", 2)),
-                new JLabel(String.format("Mac Address: %s", 3)),
-                new JLabel(String.format("IPV4 Address List: %s", 4)),
-                new JLabel(String.format("IPV6 Address List: %s", 5)),
-                new JLabel(String.format("Subnet Mask: %s", 6)),
-                new JLabel(String.format("Connector Present: %s", true)),
-                new JLabel(String.format("Time Stamp: %s", 7)),
-                new JLabel(String.format("Speed: %s", 8)),
-                new JLabel(String.format("Bytes Sent: %s", 9)),
-                new JLabel(String.format("Bytes Received: %s", 10)),
-                new JLabel(String.format("Packets Sent: %s", 11)),
-                new JLabel(String.format("Packets Received: %s", 12)),
-                new JLabel(String.format("Packets Drops: %s", 13)),
-                new JLabel(String.format("Packets Collisions: %s", 14)),
-                new JLabel(String.format("Out Errors: %s", 15)),
+                new JLabel(String.format("Network Name: %s", networkArray.getFirst().getName())),
+                new JLabel(String.format("Display Name: %s", networkArray.getFirst().getDisplayName())),
+                new JLabel(String.format("Mac Address: %s", networkArray.getFirst().getMacaddr())),
+                new JLabel(String.format("IPV4 Address List: %s", networkArray.getFirst().getIPv4addrList())),
+                new JLabel(String.format("IPV6 Address List: %s", networkArray.getFirst().getIPv6addrList())),
+                new JLabel(String.format("Subnet Mask: %s", networkArray.getFirst().getSubnetMasks())),
+                new JLabel(String.format("Connector Present: %s", networkArray.getFirst().isConnectorPresent())),
+                new JLabel(String.format("Time Stamp: %s", networkArray.getFirst().getTimeStamp())),
+                new JLabel(String.format("Speed: %s", networkArray.getFirst().getSpeed())),
+                new JLabel(String.format("Bytes Sent: %s", networkArray.getFirst().getBytesSent())),
+                new JLabel(String.format("Bytes Received: %s", networkArray.getFirst().getBytesReceived())),
+                new JLabel(String.format("Packets Sent: %s", networkArray.getFirst().getPacketsSent())),
+                new JLabel(String.format("Packets Received: %s", networkArray.getFirst().getPacketsReceived())),
+                new JLabel(String.format("Packets Drops: %s", networkArray.getFirst().getPacketDrops())),
+                new JLabel(String.format("Packets Collisions: %s", networkArray.getFirst().getPacketCollisions())),
+                new JLabel(String.format("Out Errors: %s", networkArray.getFirst().getOutErrors())),
         };
 
 
         int labelDownShift = 30; // Y-Position of Top Button
         for (JLabel iLabel : networkLabels) {
-            iLabel.setBounds(480, labelDownShift, 300, 50);
+            iLabel.setBounds(480, labelDownShift, 400, 50);
             iLabel.setForeground(textColor);
             labelDownShift += 20; // Moves down Y-Position for Next Button
             add(iLabel);
