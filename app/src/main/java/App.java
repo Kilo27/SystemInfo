@@ -3,12 +3,17 @@
  */
 
 
+import oshi.hardware.NetworkIF;
+
 import javax.swing.*;
 import javax.swing.JComponent;
 import java.awt.*;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.net.NetworkInterface;
+import java.util.ArrayList;
 import java.util.List;
 
 public class App {
@@ -85,6 +90,13 @@ class MainMenuFrame extends AbstractSystemInfoFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new DisksMenuFrame();
+                dispose();
+            }
+        });
+        selectMenuButtons[4].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new NetworkMenuFrame();
                 dispose();
             }
         });
@@ -635,6 +647,10 @@ class NetworkMenuFrame extends AbstractSystemInfoFrame {
 		super();
 		setTitle("System Info - Network");
 
+        Network network = new Network();
+
+        ArrayList networkArray = network.doTheShit();
+
         // Main Menu Button
         JButton mainMenuButton = new  JButton("Main Menu");
         mainMenuButton.setBounds(0, 0, 150, 50);
@@ -648,6 +664,37 @@ class NetworkMenuFrame extends AbstractSystemInfoFrame {
         });
 
         add(mainMenuButton);
+
+        // Labels
+        JLabel[] networkLabels = {
+                new JLabel(String.format("Network Name: %s", networkArray.getFirst())),
+                new JLabel(String.format("Display Name: %s", 2)),
+                new JLabel(String.format("Mac Address: %s", 3)),
+                new JLabel(String.format("IPV4 Address List: %s", 4)),
+                new JLabel(String.format("IPV6 Address List: %s", 5)),
+                new JLabel(String.format("Subnet Mask: %s", 6)),
+                new JLabel(String.format("Connector Present: %s", true)),
+                new JLabel(String.format("Time Stamp: %s", 7)),
+                new JLabel(String.format("Speed: %s", 8)),
+                new JLabel(String.format("Bytes Sent: %s", 9)),
+                new JLabel(String.format("Bytes Received: %s", 10)),
+                new JLabel(String.format("Packets Sent: %s", 11)),
+                new JLabel(String.format("Packets Received: %s", 12)),
+                new JLabel(String.format("Packets Drops: %s", 13)),
+                new JLabel(String.format("Packets Collisions: %s", 14)),
+                new JLabel(String.format("Out Errors: %s", 15)),
+        };
+
+
+        int labelDownShift = 30; // Y-Position of Top Button
+        for (JLabel iLabel : networkLabels) {
+            iLabel.setBounds(480, labelDownShift, 300, 50);
+            iLabel.setForeground(textColor);
+            labelDownShift += 20; // Moves down Y-Position for Next Button
+            add(iLabel);
+        }
+
+        setVisible(true);
 	}
 }
 
