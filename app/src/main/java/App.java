@@ -15,6 +15,7 @@ import java.lang.reflect.Array;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class App {
 	public static void main(String[] args) {
@@ -720,9 +721,95 @@ class USBDevicesMenuFrame extends AbstractSystemInfoFrame {
 
         final JComboBox<String> cb = new JComboBox<String>(choices);
         cb.setSelectedIndex(0);
-        cb.setBounds(480, 0, 100, 30);
+        cb.setBounds(480, 0, 200, 30);
         add(cb);
 
+        // create and add labels once; update their text in the listener to avoid stacking
+        final JLabel vendorLabel = new JLabel();
+        vendorLabel.setBounds(480, 40, 700, 50);
+        vendorLabel.setForeground(textColor);
+        add(vendorLabel);
+
+        final JLabel vendorIDLabel = new JLabel();
+        vendorIDLabel.setBounds(480, 60, 700, 50);
+        vendorIDLabel.setForeground(textColor);
+        add(vendorIDLabel);
+
+        final JLabel productIDLabel = new JLabel();
+        productIDLabel.setBounds(480, 80, 700, 50);
+        productIDLabel.setForeground(textColor);
+        add(productIDLabel);
+
+        final JLabel serialNumberLabel = new JLabel();
+        serialNumberLabel.setBounds(480, 100, 700, 50);
+        serialNumberLabel.setForeground(textColor);
+        add(serialNumberLabel);
+
+        final JLabel uniqueIDLabel = new JLabel();
+        uniqueIDLabel.setBounds(480, 120, 700, 50);
+        uniqueIDLabel.setForeground(textColor);
+        add(uniqueIDLabel);
+
+        final JLabel childrenLabel = new JLabel();
+        childrenLabel.setBounds(480, 140, 700, 50);
+        childrenLabel.setForeground(textColor);
+        add(childrenLabel);
+
+        // initialize labels with the first item if available
+        if (sizeof > 0) {
+            int initialIndex = cb.getSelectedIndex();
+            USB.USBInfo info = usbList.get(initialIndex);
+            vendorLabel.setText(String.format("Vendor: %s", info.vendor));
+            vendorIDLabel.setText(String.format("Vendor ID: %s", info.vendorId));
+            productIDLabel.setText(String.format("Product ID: %s", info.productId));
+            serialNumberLabel.setText(String.format("Serial Number: %s", info.serialNumber));
+            uniqueIDLabel.setText(String.format("Unique ID: %s", info.uniqueId));
+            childrenLabel.setText(String.format("Children: %s", info.children));
+        }
+
+        cb.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int x = 0;
+                JComboBox<String> source = (JComboBox<String>) e.getSource();
+                String selectedItem = (String) source.getSelectedItem();
+                for (int index = 0; index < sizeof; index++) {
+                    if (Objects.equals(usbList.get(index).name, selectedItem)) {
+                        x = index;
+                        break;
+                    }
+                }
+                USB.USBInfo info = usbList.get(x);
+                // update existing labels instead of creating new ones
+                vendorLabel.setText(String.format("Vendor: %s", info.vendor));
+                vendorIDLabel.setText(String.format("Vendor ID: %s", info.vendorId));
+                productIDLabel.setText(String.format("Product ID: %s", info.productId));
+                serialNumberLabel.setText(String.format("Serial Number: %s", info.serialNumber));
+                uniqueIDLabel.setText(String.format("Unique ID: %s", info.uniqueId));
+                childrenLabel.setText(String.format("Children: %s", info.children));
+                // ensure UI refresh
+                vendorLabel.revalidate();
+                vendorLabel.repaint();
+                vendorIDLabel.revalidate();
+                vendorIDLabel.repaint();
+                productIDLabel.revalidate();
+                productIDLabel.repaint();
+                serialNumberLabel.revalidate();
+                serialNumberLabel.repaint();
+                uniqueIDLabel.revalidate();
+                uniqueIDLabel.repaint();
+                childrenLabel.revalidate();
+                childrenLabel.repaint();
+
+                System.out.println(info.name);
+                System.out.println(info.vendor);
+                System.out.println(info.vendorId);
+                System.out.println(info.productId);
+                System.out.println(info.serialNumber);
+                System.out.println(info.uniqueId);
+                System.out.println(info.children);
+            }
+        });
 
         mainMenuButton.addActionListener(new ActionListener() {
             @Override
